@@ -1,0 +1,12 @@
+
+version: "3.8"
+services:
+  ##postgres ##
+  postgres:
+    image: postgres:14.3
+    ports:
+      - "5050:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD : test
+      POSTGRES_DB: db
