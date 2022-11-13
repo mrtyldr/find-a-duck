@@ -16,7 +16,7 @@ public class EntryService {
 
     private final EntryRepository entryRepository;
 
-    public UUID addEntry(EntryController.AddEntryCommand command){
+    public UUID addEntry(EntryController.AddEntryCommand command, String userId){
         var id = UUID.randomUUID();
         var entry = new Entry(id,command.getCategoryId(), command.getTitle(),command.getContent(), OffsetDateTime.now(),OffsetDateTime.now());
         entryRepository.save(entry);

@@ -1,20 +1,53 @@
 package com.kodizim.kodforum.service;
 
 
-import com.kodizim.kodforum.entity.User;
+import com.auth0.client.auth.AuthAPI;
+import com.auth0.json.mgmt.users.User;
 import com.kodizim.kodforum.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
+import com.kodizim.kodforum.security.Auth0Properties;
+import com.kodizim.kodforum.security.ManagementApiWrapper;
+import com.kodizim.kodforum.service.domain.AddUserCommand;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
+@Slf4j
 public class UserService {
     private final UserRepository userRepository;
 
+    private final ManagementApiWrapper apiWrapper;
 
-    public void addUser(String userId,String userName, String email){
-        var user = new User(userId,userName,email);
+    private final Auth0Properties properties;
 
-        userRepository.save(user);
+    public UserService(UserRepository userRepository, AuthAPI api, Auth0Properties properties) {
+        this.userRepository = userRepository;
+        this.properties = properties;
+        this.apiWrapper = new ManagementApiWrapper(api
+                , properties.getManagementAudience()
+                , properties.getDomain());
+    }
+
+    @Transactional
+    public void addUser(AddUserCommand command) {
+        var user = new User();
+
+
+        try {
+            user.setConnection(properties.getUserDatabase());
+            user.setEmail(command.getEmail());
+            user.setPassword(command.getPassword().toCharArray());
+            var createdUser = apiWrapper.call(api -> api.users().create(user).execute());
+            var kodForumUser = new com.kodizim.kodforum.entity.User(
+                    UUID.randomUUID(), createdUser.getId(), command.getUserName(), command.getEmail()
+            );
+            userRepository.save(kodForumUser);
+        } catch (Exception e) {
+            log.info("düştü buraya");
+            throw new RuntimeException("exception occured");
+        }
     }
 }

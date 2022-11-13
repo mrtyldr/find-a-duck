@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -24,13 +26,14 @@ public class EntryController {
    }
 
     @PostMapping("/")
-    public UUID addEntry(@RequestBody AddEntryCommand command){
-        return entryService.addEntry(command);
+    public UUID addEntry(@RequestBody AddEntryCommand command, Principal principal){
+
+       return entryService.addEntry(command,principal.getName());
     }
 
     @GetMapping("/")
-    public Entry EntrygetEntries() {
-       var entries = entryService.getEntries().get(0);
+    public List<Entry> EntrygetEntries() {
+       var entries = entryService.getEntries();
        return entries;
     }
 }

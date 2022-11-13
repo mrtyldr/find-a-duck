@@ -1,0 +1,37 @@
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+spring:
+  security:
+    oauth2:
+      resource-server:
+        jwt:
+          issuer-uri: https://kodforum.us.auth0.com/
+  flyway:
+    enabled: true
+    clean-disabled: false
+  datasource:
+    username: admin
+    url: jdbc:postgresql://localhost:5050/db
+    password: test
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+      javax:
+        persistence:
+          validation:
+            mode: none
+    hibernate:
+      ddl-auto: update
+
+auth0:
+  audience: api.kodforum.com
+  domain: kodforum.us.auth0.com
+  client-id: QGyhyvIm5cmoF2wLfhHwM8YQ8XewUNc0
+  client-secret: agXQz0WZK5k4deYqy61LbHFLrrayRqpKbqh7BKll46Rc_pbomL1WCj4Sh2aQZ_PX
+  management-audience: https://kodforum.us.auth0.com/api/v2/
+  issuer-uri: https://kodforum.us.auth0.com/
+  user-database: Username-Password-Authentication

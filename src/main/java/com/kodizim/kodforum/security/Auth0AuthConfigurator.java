@@ -1,5 +1,6 @@
 package com.kodizim.kodforum.security;
 
+import com.auth0.client.auth.AuthAPI;
 import com.kodizim.kodforum.security.converter.Auth0Configurator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -53,5 +54,13 @@ public class Auth0AuthConfigurator implements Auth0Configurator {
             }
             return OAuth2TokenValidatorResult.failure(error);
         }
+    }
+
+    @Bean
+    AuthAPI AuthAPI() {
+        return new AuthAPI(
+                properties.getDomain(),
+                properties.getClientId(),
+                properties.getClientSecret());
     }
 }

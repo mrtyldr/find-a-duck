@@ -15,4 +15,5 @@ public class Auth0Properties {
     private String audience;
     private String managementAudience;
     private String issuerUri;
+    private  String userDatabase;
 }
