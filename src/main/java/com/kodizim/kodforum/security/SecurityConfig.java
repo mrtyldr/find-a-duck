@@ -19,6 +19,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().and()
                 .csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/api/v2/users")
+                .permitAll()
                 .antMatchers(
                         // -- Swagger UI v2
                         "/api-docs",
@@ -35,7 +37,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/dummy/**",
                         "/i18n/**"
                 ).permitAll()
-                .antMatchers("/salt-edge/callbacks/**").permitAll()
                 .anyRequest().hasAuthority("STANDARD");
 
         auth0Configurator.configure(http);

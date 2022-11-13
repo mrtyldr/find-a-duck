@@ -13,13 +13,15 @@ create table entry
     category_id uuid                     not null,
     title       varchar(255)             not null,
     content     varchar(255)             not null,
+    hourly_pay  numeric                  not null,
+    valid_til   timestamp with time zone not null,
     created_on  timestamp with time zone not null,
     modified_on timestamp with time zone not null
 );
 
 create table users
 (
-    user_id varchar(255) primary key not null,
-    user_name varchar(255) not null,
-    email varchar(255) not null
+    user_id   varchar(255) primary key not null,
+    user_name varchar(255)             not null,
+    email     varchar(255)             not null
 );

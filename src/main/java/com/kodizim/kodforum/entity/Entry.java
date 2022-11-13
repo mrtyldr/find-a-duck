@@ -3,9 +3,11 @@ package com.kodizim.kodforum.entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.AbstractAggregateRoot;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -13,20 +15,24 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Entry {
+public class Entry extends AbstractAggregateRoot<Entry> {
 
     @Id
-    UUID id;
+    private UUID id;
 
-    UUID categoryId;
+    private UUID categoryId;
 
-    String title;
+    private String title;
 
-    String content;
+    private String content;
 
-    OffsetDateTime createdOn;
+    private BigDecimal hourlyPay;
 
-    OffsetDateTime modifiedOn;
+    private OffsetDateTime validTil;
+
+    private OffsetDateTime createdOn;
+
+    private OffsetDateTime modifiedOn;
 
 
 }

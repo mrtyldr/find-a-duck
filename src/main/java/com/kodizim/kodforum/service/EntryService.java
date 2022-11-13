@@ -6,6 +6,7 @@ import com.kodizim.kodforum.repository.EntryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -18,7 +19,7 @@ public class EntryService {
 
     public UUID addEntry(EntryController.AddEntryCommand command, String userId){
         var id = UUID.randomUUID();
-        var entry = new Entry(id,command.getCategoryId(), command.getTitle(),command.getContent(), OffsetDateTime.now(),OffsetDateTime.now());
+        var entry = new Entry(id,command.getCategoryId(), command.getTitle(),command.getContent(),new BigDecimal("25.0"),OffsetDateTime.now(), OffsetDateTime.now(),OffsetDateTime.now());
         entryRepository.save(entry);
         return id;
     }

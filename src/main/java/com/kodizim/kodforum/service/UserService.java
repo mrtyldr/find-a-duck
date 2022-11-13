@@ -42,7 +42,7 @@ public class UserService {
             user.setPassword(command.getPassword().toCharArray());
             var createdUser = apiWrapper.call(api -> api.users().create(user).execute());
             var kodForumUser = new com.kodizim.kodforum.entity.User(
-                    UUID.randomUUID(), createdUser.getId(), command.getUserName(), command.getEmail()
+                    UUID.randomUUID(), createdUser.getId(), command.getEmail()
             );
             userRepository.save(kodForumUser);
         } catch (Exception e) {
