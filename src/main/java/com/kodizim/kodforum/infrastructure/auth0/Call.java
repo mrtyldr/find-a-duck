@@ -1,4 +1,4 @@
-package com.kodizim.kodforum.security;
+package com.kodizim.kodforum.infrastructure.auth0;
 
 import com.auth0.client.mgmt.ManagementAPI;
 import com.auth0.exception.Auth0Exception;

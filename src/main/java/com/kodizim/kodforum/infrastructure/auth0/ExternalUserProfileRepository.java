@@ -1,4 +1,4 @@
-package com.kodizim.kodforum.security;
+package com.kodizim.kodforum.infrastructure.auth0;
 
 public interface ExternalUserProfileRepository {
 

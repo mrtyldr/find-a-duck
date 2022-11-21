@@ -1,4 +1,4 @@
-package com.kodizim.kodforum.entity;
+package com.kodizim.kodforum.domain.entry;
 
 
 import lombok.Getter;
@@ -17,11 +17,5 @@ public class Category extends AbstractAggregateRoot<Category> {
     private UUID id;
 
     private String name;
-
-    private String  about;
-
-    private OffsetDateTime createdOn;
-
-    private OffsetDateTime modifiedOn;
 
 }

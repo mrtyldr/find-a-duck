@@ -1,4 +1,4 @@
-package com.kodizim.kodforum.security;
+package com.kodizim.kodforum.infrastructure.auth0;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;

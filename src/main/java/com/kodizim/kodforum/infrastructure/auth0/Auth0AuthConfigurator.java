@@ -1,7 +1,7 @@
-package com.kodizim.kodforum.security;
+package com.kodizim.kodforum.infrastructure.auth0;
 
 import com.auth0.client.auth.AuthAPI;
-import com.kodizim.kodforum.security.converter.Auth0Configurator;
+import com.kodizim.kodforum.infrastructure.auth0.converter.Auth0Configurator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

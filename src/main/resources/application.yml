@@ -10,22 +10,30 @@ spring:
         jwt:
           issuer-uri: https://kodforum.us.auth0.com/
   flyway:
+    locations: classpath:dbmigrations/
     enabled: true
     clean-disabled: false
+    schemas: public
   datasource:
-    username: admin
-    url: jdbc:postgresql://localhost:5050/db
-    password: test
+    driver-class-name: org.postgresql.Driver
+    username: dbadmin
+    url: jdbc:postgresql://localhost:5432/testdb
+    password: dbadmin
   jpa:
+    database-platform: com.kodizim.kodforum.config.JpaConfig
+    hibernate:
+      ddl-auto: validate
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-      javax:
-        persistence:
-          validation:
-            mode: none
-    hibernate:
-      ddl-auto: update
+        jdbc:
+          batch_size: 5
+          order_inserts: true
+          time_zone: UTC
+        temp:
+          use_jdbc_metadata_defaults: false
+        format_sql: true
+        show_sql: false
+    open-in-view: false
 
 auth0:
   audience: api.kodforum.com

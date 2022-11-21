@@ -1,4 +1,4 @@
-package com.kodizim.kodforum.security.converter;
+package com.kodizim.kodforum.infrastructure.auth0.converter;
 
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 

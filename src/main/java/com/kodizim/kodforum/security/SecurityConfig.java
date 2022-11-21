@@ -1,6 +1,6 @@
 package com.kodizim.kodforum.security;
 
-import com.kodizim.kodforum.security.converter.Auth0Configurator;
+import com.kodizim.kodforum.infrastructure.auth0.converter.Auth0Configurator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;

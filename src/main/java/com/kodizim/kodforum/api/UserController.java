@@ -1,8 +1,8 @@
 package com.kodizim.kodforum.api;
 
 
-import com.kodizim.kodforum.service.UserService;
-import com.kodizim.kodforum.service.domain.AddUserCommand;
+import com.kodizim.kodforum.application.UserService;
+import com.kodizim.kodforum.domain.AddUserCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

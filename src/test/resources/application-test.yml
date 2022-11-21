@@ -1,0 +1,17 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  flyway:
+    enabled: true
+    clean-disabled: false
+  datasource:
+    url: jdbc:postgresql://localhost:5433/testdb
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate
+    properties:
+      hibernate:
+        show_sql: false
+    hibernate:
+      ddl-auto: validate

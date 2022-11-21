@@ -1,11 +1,11 @@
-package com.kodizim.kodforum.security;
+package com.kodizim.kodforum.infrastructure.auth0;
 
 import com.auth0.client.auth.AuthAPI;
 import com.auth0.json.mgmt.users.User;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class Auth0UserProfileRepository implements  ExternalUserProfileRepository {
+public class Auth0UserProfileRepository implements ExternalUserProfileRepository {
     private final ManagementApiWrapper managementApiWrapper;
 
     public Auth0UserProfileRepository(AuthAPI authAPI, Auth0Properties properties) {
