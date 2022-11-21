@@ -1,4 +1,4 @@
-package com.kodizim.kodforum.service.domain;
+package com.kodizim.kodforum.domain;
 
 import lombok.Data;
 import lombok.Value;
@@ -7,5 +7,4 @@ import lombok.Value;
 public class AddUserCommand {
     private String email;
     private String password;
-    private String userName;
 }

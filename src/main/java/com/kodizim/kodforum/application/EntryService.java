@@ -1,8 +1,8 @@
-package com.kodizim.kodforum.service;
+package com.kodizim.kodforum.application;
 
 import com.kodizim.kodforum.api.EntryController;
-import com.kodizim.kodforum.entity.Entry;
-import com.kodizim.kodforum.repository.EntryRepository;
+import com.kodizim.kodforum.domain.entry.Entry;
+import com.kodizim.kodforum.domain.entry.EntryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +18,10 @@ public class EntryService {
     private final EntryRepository entryRepository;
 
     public UUID addEntry(EntryController.AddEntryCommand command, String userId){
-        var id = UUID.randomUUID();
-        var entry = new Entry(id,command.getCategoryId(), command.getTitle(),command.getContent(),new BigDecimal("25.0"),OffsetDateTime.now(), OffsetDateTime.now(),OffsetDateTime.now());
-        entryRepository.save(entry);
-        return id;
+        return null;
     }
 
     public List<Entry> getEntries() {
-        var entries = entryRepository.findAll();
-        return entries;
+     return entryRepository.findAll();
     }
 }

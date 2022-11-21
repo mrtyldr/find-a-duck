@@ -1,8 +1,8 @@
 package com.kodizim.kodforum.api;
 
 
-import com.kodizim.kodforum.entity.Entry;
-import com.kodizim.kodforum.service.EntryService;
+import com.kodizim.kodforum.domain.entry.Entry;
+import com.kodizim.kodforum.application.EntryService;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.springframework.web.bind.annotation.*;

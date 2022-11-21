@@ -1,12 +1,23 @@
-
-version: "3.8"
+version: "3.9"
 services:
-  ##postgres ##
-  postgres:
-    image: postgres:14.3
-    ports:
-      - "5050:5432"
+  db:
+    image: postgres:13.6-alpine
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD : test
-      POSTGRES_DB: db
+      - TZ=UTC
+      - PGTZ=UTC
+      - POSTGRES_DB=testdb
+      - POSTGRES_USER=dbadmin
+      - POSTGRES_PASSWORD=dbadmin
+    ports:
+      - "5432:5432"
+
+  integration-db:
+    image: postgres:13.6-alpine
+    environment:
+      - TZ=UTC
+      - PGTZ=UTC
+      - POSTGRES_DB=testdb
+      - POSTGRES_USER=dbadmin
+      - POSTGRES_PASSWORD=dbadmin
+    ports:
+      - "5433:5432"

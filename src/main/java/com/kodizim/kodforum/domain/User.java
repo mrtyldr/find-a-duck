@@ -1,4 +1,4 @@
-package com.kodizim.kodforum.entity;
+package com.kodizim.kodforum.domain;
 
 
 import lombok.AllArgsConstructor;
@@ -18,8 +18,6 @@ import java.util.UUID;
 @Table(name = "users")
 public class User extends AbstractAggregateRoot<User> {
     @Id
-    UUID id;
-
     String userId;
 
     String email;
