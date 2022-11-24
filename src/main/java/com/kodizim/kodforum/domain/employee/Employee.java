@@ -1,6 +1,9 @@
 package com.kodizim.kodforum.domain.employee;
 
 import com.vladmihalcea.hibernate.type.array.ListArrayType;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.springframework.data.domain.AbstractAggregateRoot;
@@ -16,6 +19,9 @@ import java.util.List;
 
 @Entity
 @TypeDef(name = "list-array", typeClass = ListArrayType.class)
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Employee extends AbstractAggregateRoot<Employee> {
 
     @Id

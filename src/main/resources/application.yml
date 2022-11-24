@@ -20,7 +20,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/testdb
     password: dbadmin
   jpa:
-    database-platform: com.kodizim.kodforum.config.JpaConfig
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
     hibernate:
       ddl-auto: validate
     properties:
