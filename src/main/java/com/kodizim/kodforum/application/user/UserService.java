@@ -1,4 +1,4 @@
-package com.kodizim.kodforum.application;
+package com.kodizim.kodforum.application.user;
 
 
 import com.auth0.client.auth.AuthAPI;
@@ -17,14 +17,14 @@ import java.util.UUID;
 @Service
 @Slf4j
 public class UserService {
-    //private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
     private final ManagementApiWrapper apiWrapper;
 
     private final Auth0Properties properties;
 
-    public UserService( AuthAPI api, Auth0Properties properties) {
-       // this.userRepository = userRepository;
+    public UserService( AuthAPI api, Auth0Properties properties,UserRepository userRepository) {
+        this.userRepository = userRepository;
         this.properties = properties;
         this.apiWrapper = new ManagementApiWrapper(api
                 , properties.getManagementAudience()
@@ -42,9 +42,9 @@ public class UserService {
             user.setPassword(command.getPassword().toCharArray());
             var createdUser = apiWrapper.call(api -> api.users().create(user).execute());
             var User = new com.kodizim.kodforum.domain.User(
-                     createdUser.getId(), command.getEmail()
+                     createdUser.getId(), command.getEmail(),command.getUserType()
             );
-           // userRepository.save(User);
+           userRepository.save(User);
         } catch (Exception e) {
             log.info("düştü buraya");
             throw new RuntimeException("exception occured");

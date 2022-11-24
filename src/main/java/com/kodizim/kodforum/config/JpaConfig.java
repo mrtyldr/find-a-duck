@@ -2,7 +2,9 @@ package com.kodizim.kodforum.config;
 
 
 import lombok.RequiredArgsConstructor;
-import org.hibernate.dialect.PostgreSQL10Dialect;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
@@ -15,6 +17,14 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
         }
 )
 @RequiredArgsConstructor
-public class JpaConfig  extends PostgreSQL10Dialect {
+public class JpaConfig {
 
+        @Bean
+        @ConditionalOnMissingBean(FlywayMigrationStrategy.class)
+        public FlywayMigrationStrategy migrateStrategy() {
+                return flyway -> {
+                        flyway.repair();
+                        flyway.migrate();
+                };
+        }
 }

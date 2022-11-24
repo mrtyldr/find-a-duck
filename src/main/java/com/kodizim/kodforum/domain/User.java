@@ -6,9 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.AbstractAggregateRoot;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
@@ -18,7 +16,12 @@ import java.util.UUID;
 @Table(name = "users")
 public class User extends AbstractAggregateRoot<User> {
     @Id
-    String userId;
+    private String userId;
 
-    String email;
+    private String email;
+
+    @Enumerated(EnumType.STRING)
+    private UserType userType;
+
+
 }

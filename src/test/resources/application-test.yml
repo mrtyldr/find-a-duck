@@ -2,16 +2,27 @@ spring:
   main:
     allow-bean-definition-overriding: true
   flyway:
+    locations: classpath:dbmigrations/
     enabled: true
     clean-disabled: false
+    schemas: public
   datasource:
-    url: jdbc:postgresql://localhost:5433/testdb
     driver-class-name: org.postgresql.Driver
-
+    username: dbadmin
+    url: jdbc:postgresql://localhost:5433/testdb
+    password: dbadmin
   jpa:
-    database-platform: org.hibernate
-    properties:
-      hibernate:
-        show_sql: false
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
     hibernate:
       ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 5
+          order_inserts: true
+          time_zone: UTC
+        temp:
+          use_jdbc_metadata_defaults: false
+        format_sql: true
+        show_sql: false
+    open-in-view: false
