@@ -21,28 +21,42 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.List;
 
-public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
+public interface EmployeeRepository extends JpaRepository<Employee, UUID>, EmployeeQueries {
     Optional<Employee> findByUserId(String userId);
 
     @Query("""
-    select new com.kodizim.kodforum.domain.employee.EmployeeDto(
-    e.employeeId,
-    e.name,
-    e.surname,
-    e.phoneNumber,
-    e.photoLocationKey,
-    e.birthDate,
-    e.about,
-    e.professions
-    )
-    from Employee  e
-    where e.userId = :userId
-""")
+                select new com.kodizim.kodforum.domain.employee.EmployeeDto(
+                e.employeeId,
+                e.name,
+                e.surname,
+                e.phoneNumber,
+                e.photoLocationKey,
+                e.birthDate,
+                e.about,
+                e.professions
+                )
+                from Employee  e
+                where e.userId = :userId
+            """)
     Optional<EmployeeDto> getEmployeeDto(String userId);
 
-    @Query("""
-select p.professionName from Profession p where p.professionId in (:professionIds)
-""")
-    List<String> getProfessionName(List<UUID> professionIds);
+   /* @Query("""
+            select p.professionName from Profession p where p.professionId in (:professionIds)
+            """)
+    List<String> getProfessionName(List<UUID> professionIds);*/
 
+    @Component
+    @RequiredArgsConstructor
+    class EmployeeQueriesImpl implements EmployeeQueries {
+
+        private final EntityManager entityManager;
+
+        @Override
+        public List<String> getProfessionName(List<UUID> professionIds) {
+            return entityManager
+                    .createQuery("select p.professionName from Profession p where p.professionId in (:professionIds)", String.class)
+                    .setParameter("professionIds", professionIds)
+                    .getResultList();
+        }
+    }
 }

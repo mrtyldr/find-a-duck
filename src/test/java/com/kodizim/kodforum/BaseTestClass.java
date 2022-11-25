@@ -1,7 +1,11 @@
 package com.kodizim.kodforum;
 
 import com.kodizim.kodforum.application.user.EmployeeService;
+import com.kodizim.kodforum.domain.User;
+import com.kodizim.kodforum.domain.UserRepository;
+import com.kodizim.kodforum.domain.UserType;
 import com.kodizim.kodforum.domain.employee.EmployeeInitialSetupCommand;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
@@ -29,18 +33,22 @@ public abstract class BaseTestClass{
 
     @Autowired
     EmployeeService employeeService;
+
+    @Autowired
+    UserRepository userRepository;
     @BeforeEach
     public void beforeEach(){
-
         JdbcTestUtils.deleteFromTables(jdbcTemplate,tablesToClean.toArray(String[]::new));
-
-
+        var companyUser = new User("company","johndoe@mail.com", UserType.COMPANY);
+        var employeeUser = new User("employee","janedoe@mail.com",UserType.EMPLOYEE);
+        userRepository.saveAll(List.of(companyUser,employeeUser));
     }
+
+
 
 
     protected void cleanBeforeAndAfter(String... tableNames) {
         Collections.addAll(tablesToClean, tableNames);
-        // We shouldn't delete "user" record. So we never clear users table.
         tablesToClean.remove("users");
     }
 

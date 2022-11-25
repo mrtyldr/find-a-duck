@@ -9,13 +9,10 @@ import javax.persistence.Id;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-@Entity
-@Getter
-public class Category extends AbstractAggregateRoot<Category> {
 
-    @Id
-    private UUID id;
-
-    private String name;
-
+public enum Category {
+    FINANCE, BUSINESS_MANAGEMENT, ART,
+    ENGINEERING, HEALTH, HOSPITALITY, IT,
+    LAW, SPORT, MARKETING, MEDIA, CONSTRUCTION,
+    HR, RETAIL, SALES, EDUCATION, LOGISTICS
 }

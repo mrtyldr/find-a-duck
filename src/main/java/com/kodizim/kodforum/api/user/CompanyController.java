@@ -4,6 +4,7 @@ package com.kodizim.kodforum.api.user;
 import com.kodizim.kodforum.domain.company.Company;
 import com.kodizim.kodforum.domain.company.CompanyInitialSetupCommand;
 import com.kodizim.kodforum.domain.company.CompanyRepository;
+import com.kodizim.kodforum.error.AlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,9 @@ public class CompanyController {
 
     @PostMapping("/initial-setup")
     public void companyInitialSetup(@RequestBody CompanyInitialSetupCommand command, Principal principal){
+        if(companyRepository.existsByUserId(principal.getName()))
+            throw new AlreadyExistsException("company already exists");
+
         var company = new Company(
                 UUID.randomUUID(),
                 principal.getName(),
@@ -28,4 +32,6 @@ public class CompanyController {
         );
         companyRepository.save(company);
     }
+
+
 }
