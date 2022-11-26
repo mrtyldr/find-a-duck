@@ -9,9 +9,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.springframework.data.domain.AbstractAggregateRoot;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -28,7 +26,8 @@ public class Entry extends AbstractAggregateRoot<Entry> {
     @Id
     private UUID id;
 
-    private UUID categoryId;
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
     private UUID employerId;
 
