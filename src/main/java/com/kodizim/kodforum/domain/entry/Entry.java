@@ -1,6 +1,5 @@
 package com.kodizim.kodforum.domain.entry;
 
-import com.kodizim.kodforum.domain.employee.Profession;
 import com.vladmihalcea.hibernate.type.array.ListArrayType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
