@@ -14,7 +14,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v2/entry")
+@RequestMapping("/api/entry")
 @RequiredArgsConstructor
 public class EntryController {
 

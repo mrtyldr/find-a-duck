@@ -41,7 +41,7 @@ class EntryControllerTest extends BaseTestClass {
     void should_add_Entry() throws Exception {
         var validTil = OffsetDateTime.of(LocalDateTime.of(2022, 12, 25, 17, 0), ZoneOffset.of("+3"));
         var companyId =addCompany();
-        var request = post("/api/v2/entry/")
+        var request = post("/api/entry/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                                                     {
@@ -56,7 +56,7 @@ class EntryControllerTest extends BaseTestClass {
                         """.formatted(validTil));
         mockMvc.perform(request).andExpect(status().isNoContent());
 
-        mockMvc.perform(get("/api/v2/entry/"))
+        mockMvc.perform(get("/api/entry/"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                                      {"result":[

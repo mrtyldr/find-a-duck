@@ -12,7 +12,7 @@ import java.security.Principal;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v2/company")
+@RequestMapping("/api/company")
 @RequiredArgsConstructor
 public class CompanyController {
     private final CompanyRepository companyRepository;
