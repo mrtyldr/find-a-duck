@@ -38,11 +38,12 @@ public class Application extends AbstractAggregateRoot<Application> {
         this.status = WAITING;
     }
 
-    public void accept(){
+    public void accept() {
         this.status = ACCEPTED;
+        registerEvent(new ApplicationAccepted(this.entryId, this.employeeId));
     }
 
-    public void reject(){
+    public void reject() {
         this.status = REJECTED;
     }
 }

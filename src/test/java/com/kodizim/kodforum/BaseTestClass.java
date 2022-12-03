@@ -1,5 +1,6 @@
 package com.kodizim.kodforum;
 
+import com.kodizim.kodforum.application.user.CompanyService;
 import com.kodizim.kodforum.application.user.EmployeeService;
 import com.kodizim.kodforum.domain.User;
 import com.kodizim.kodforum.domain.UserType;
@@ -30,12 +31,15 @@ public abstract class BaseTestClass{
     @Autowired
     EmployeeService employeeService;
 
+    @Autowired
+    CompanyService companyService;
+
 
     @BeforeEach
     public void beforeEach(){
         JdbcTestUtils.deleteFromTables(jdbcTemplate,tablesToClean.toArray(String[]::new));
-        var companyUser = new User("company","johndoe@mail.com", UserType.COMPANY);
-        var employeeUser = new User("employee","janedoe@mail.com",UserType.EMPLOYEE);
+        companyService.addCompanyUser("company","johndoe@mail.com");
+        employeeService.addEmployeeUser("employee","janedoe@mail.com");
     }
 
 
@@ -43,7 +47,6 @@ public abstract class BaseTestClass{
 
     protected void cleanBeforeAndAfter(String... tableNames) {
         Collections.addAll(tablesToClean, tableNames);
-        tablesToClean.remove("users");
     }
 
 

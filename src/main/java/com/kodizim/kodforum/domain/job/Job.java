@@ -11,7 +11,6 @@ import java.util.UUID;
 
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 public class Job extends AbstractAggregateRoot<Job> {
 
@@ -26,4 +25,9 @@ public class Job extends AbstractAggregateRoot<Job> {
 
     private Integer companyRating;
 
+    public Job(UUID jobId, UUID entryId, String employeeId) {
+        this.jobId = jobId;
+        this.entryId = entryId;
+        this.employeeId = employeeId;
+    }
 }

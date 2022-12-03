@@ -18,13 +18,14 @@ public class CompanyService {
     private final ApplicationRepository applicationRepository;
     private final CompanyRepository companyRepository;
     private final EntryRepository entryRepository;
-
+    @Transactional
     public void acceptApplication(UUID applicationId, String userId) {
         var application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new NotFoundException("application not found"));
-        //entryRepository.isValidEntry(userId, application.getEntryId());
+        if(!entryRepository.existsByCompanyIdAndId(userId, application.getEntryId()))
+            throw new NotFoundException("entry not found!");
         application.accept();
-
+        applicationRepository.save(application);
     }
 
     public void addCompanyUser(String userId, String email) {

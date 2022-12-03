@@ -63,7 +63,7 @@ class EmployeeControllerTest extends BaseTestClass {
                 .andExpect(status().isNoContent());
 
         assertThat(professionRepository.findAll()).isNotEmpty();
-        assertThat(employeeRepository.findByUserId("employee")).isPresent();
+        assertThat(employeeRepository.findByEmployeeId("employee")).isPresent();
 
         cleanBeforeAndAfter("profession","employee");
 

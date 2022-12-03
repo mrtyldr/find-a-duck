@@ -61,7 +61,7 @@ class EntryControllerTest extends BaseTestClass {
                                      {"result":[
                                      {
                                      "category":"FINANCE",
-                                     "employerId":"%s"
+                                     "companyId":"%s"
                                      ,"title":"Garson Aranıyor",
                                      "content":"ufak cafe mize garson arıyoz saati 3 lira",
                                      "hourlyPay":3.00,
