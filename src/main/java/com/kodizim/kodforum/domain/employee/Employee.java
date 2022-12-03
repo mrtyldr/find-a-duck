@@ -25,13 +25,13 @@ import java.util.List;
 public class Employee extends AbstractAggregateRoot<Employee> {
 
     @Id
-    private UUID employeeId;
-
-    private String userId;
+    private String employeeId;
 
     private String name;
 
     private String surname;
+
+    private String email;
 
     private String phoneNumber;
 
@@ -44,4 +44,25 @@ public class Employee extends AbstractAggregateRoot<Employee> {
     @Type(type = "list-array")
     @Column(name = "professions",columnDefinition = "uuid[]")
     private List<UUID> professions = new ArrayList<>();
+
+    public Employee(String employeeId, String email) {
+        this.employeeId = employeeId;
+        this.email = email;
+    }
+
+    public void employeeInitial(String name,
+                    String surname,
+                    String phoneNumber,
+                    String photoLocationKey,
+                    LocalDate birthDate,
+                    String about,
+                    List<UUID> professions) {
+        this.name = name;
+        this.surname = surname;
+        this.phoneNumber = phoneNumber;
+        this.photoLocationKey = photoLocationKey;
+        this.birthDate = birthDate;
+        this.about = about;
+        this.professions = professions;
+    }
 }

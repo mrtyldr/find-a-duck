@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 @RequiredArgsConstructor
 @Configuration
-@OpenAPIDefinition(info = @Info(title = "KodForum", version = "v2"))
+@OpenAPIDefinition(info = @Info(title = "find-a-duck", version = "v1"))
 @SecurityScheme(
         name = "bearerAuth",
         type = SecuritySchemeType.HTTP,

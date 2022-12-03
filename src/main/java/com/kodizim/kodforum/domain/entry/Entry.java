@@ -1,6 +1,5 @@
 package com.kodizim.kodforum.domain.entry;
 
-import com.kodizim.kodforum.domain.employee.Profession;
 import com.vladmihalcea.hibernate.type.array.ListArrayType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,7 +28,7 @@ public class Entry extends AbstractAggregateRoot<Entry> {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    private UUID employerId;
+    private String companyId;
 
     private String title;
 

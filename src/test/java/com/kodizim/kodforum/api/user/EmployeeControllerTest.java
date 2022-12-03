@@ -42,7 +42,7 @@ class EmployeeControllerTest extends BaseTestClass {
     @WithMockUser(authorities = "STANDARD",value = "employee")
     @Test
     void should_add_employee_and_professions() throws Exception {
-        var request = post("/api/v2/employee/initial-setup")
+        var request = post("/api/employee/initial-setup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                         {
@@ -63,7 +63,7 @@ class EmployeeControllerTest extends BaseTestClass {
                 .andExpect(status().isNoContent());
 
         assertThat(professionRepository.findAll()).isNotEmpty();
-        assertThat(employeeRepository.findByUserId("employee")).isPresent();
+        assertThat(employeeRepository.findByEmployeeId("employee")).isPresent();
 
         cleanBeforeAndAfter("profession","employee");
 

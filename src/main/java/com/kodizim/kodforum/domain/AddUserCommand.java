@@ -1,6 +1,5 @@
 package com.kodizim.kodforum.domain;
 
-import lombok.Data;
 import lombok.Value;
 import org.hibernate.validator.constraints.Length;
 

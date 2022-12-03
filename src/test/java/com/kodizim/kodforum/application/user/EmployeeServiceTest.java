@@ -20,10 +20,10 @@ class EmployeeServiceTest extends BaseTestClass {
     @Test
     void getEmployeeDto() {
        addEmployee();
-       var employeeDto = employeeService.getEmployeeDto("user");
+       var employeeDto = employeeService.getEmployeeDto("employee");
        assertThat(employeeDto).isNotNull();
        assertThat(employeeDto.getProfessions()).containsExactlyInAnyOrder("spring","java","sql");
-       employeeRepository.deleteById(employeeDto.getEmployeeId());
+       cleanBeforeAndAfter("employee");
     }
 
     private void addEmployee(){
@@ -35,6 +35,6 @@ class EmployeeServiceTest extends BaseTestClass {
                 LocalDate.of(1999,3,24),
                 "selam ben murat",
                 List.of("spring","java","sql")
-        ),"user");
+        ),"employee");
     }
 }

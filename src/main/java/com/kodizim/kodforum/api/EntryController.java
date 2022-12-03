@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v2/entry")
+@RequestMapping("/api/entry")
 @RequiredArgsConstructor
 public class EntryController {
 
@@ -30,5 +31,11 @@ public class EntryController {
     @GetMapping("/")
     public Response<List<Entry>> getEntries(Pageable pageable, Principal principal) {
         return Response.of(entryService.getEntries(pageable,principal.getName()));
+    }
+
+    @PostMapping("/apply/{entryId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void apply(@PathVariable UUID entryId,Principal principal){
+        entryService.apply(entryId, principal.getName());
     }
 }

@@ -16,4 +16,12 @@ public class CompanyInitialSetupCommand {
 
     String photoLocationKey;
 
+    String addressLine;
+
+    String city;
+
+    String country;
+
+    String postalCode;
+
 }
