@@ -22,7 +22,7 @@ import java.util.UUID;
 import java.util.List;
 
 public interface EmployeeRepository extends JpaRepository<Employee, UUID>, EmployeeQueries {
-    Optional<Employee> findByUserId(String userId);
+    Optional<Employee> findByEmployeeId(String userId);
 
     @Query("""
                 select new com.kodizim.kodforum.domain.employee.EmployeeDto(
@@ -36,7 +36,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, UUID>, Emplo
                 e.professions
                 )
                 from Employee  e
-                where e.userId = :userId
+                where e.employeeId = :userId
             """)
     Optional<EmployeeDto> getEmployeeDto(String userId);
 

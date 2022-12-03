@@ -14,7 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmployeeDto {
-    UUID employeeId;
+    String employeeId;
 
     String name;
 
@@ -32,7 +32,7 @@ public class EmployeeDto {
 
     List<String> professions;
 
-    public EmployeeDto(UUID employeeId, String name,
+    public EmployeeDto(String employeeId, String name,
                        String surname, String phoneNumber,
                        String photoLocationKey, LocalDate birthDate,
                        String about, Object professionIds) {

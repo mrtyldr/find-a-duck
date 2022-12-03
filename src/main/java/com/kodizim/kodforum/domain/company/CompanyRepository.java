@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface CompanyRepository extends JpaRepository<Company, UUID> {
-    Optional<Company> findByUserId(String userId);
+    Optional<Company> findByCompanyId(String userId);
 
-    boolean existsByUserId(String UserId);
+    boolean existsByCompanyId(String UserId);
 }

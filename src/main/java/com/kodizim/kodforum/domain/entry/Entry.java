@@ -28,7 +28,7 @@ public class Entry extends AbstractAggregateRoot<Entry> {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    private UUID employerId;
+    private String companyId;
 
     private String title;
 

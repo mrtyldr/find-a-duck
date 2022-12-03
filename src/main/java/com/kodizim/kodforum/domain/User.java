@@ -9,11 +9,10 @@ import org.springframework.data.domain.AbstractAggregateRoot;
 import javax.persistence.*;
 import java.util.UUID;
 
-@Entity
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Table(name = "users")
 public class User extends AbstractAggregateRoot<User> {
     @Id
     private String userId;

@@ -17,11 +17,11 @@ public class EmployeeService {
 
     @Transactional
     public void employeeInitialSetup(EmployeeInitialSetupCommand command, String userId) {
+        var employee = employeeRepository.findByEmployeeId(userId)
+                .orElseThrow(() -> new NotFoundException("employee not found"));
         addMissingProfessions(command.getProfessions());
         var professions = professionRepository.findProfessionsByName(command.getProfessions());
-        var employee = new Employee(
-                UUID.randomUUID(),
-                userId,
+        employee.employeeInitial(
                 command.getName(),
                 command.getSurname(),
                 command.getPhoneNumber(),
@@ -48,5 +48,10 @@ public class EmployeeService {
         var professions = employeeRepository.getProfessionName(employeeDto.getProfessionIds());
         employeeDto.setProfessions(professions);
         return employeeDto;
+    }
+
+    public void addEmployeeUser(String userId, String email) {
+        var employee = new Employee(userId,email);
+        employeeRepository.save(employee);
     }
 }
