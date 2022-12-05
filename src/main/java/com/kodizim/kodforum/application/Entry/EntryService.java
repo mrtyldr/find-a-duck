@@ -1,4 +1,4 @@
-package com.kodizim.kodforum.application;
+package com.kodizim.kodforum.application.Entry;
 
 import com.kodizim.kodforum.domain.company.CompanyRepository;
 import com.kodizim.kodforum.domain.employee.EmployeeRepository;
@@ -45,6 +45,7 @@ public class EntryService {
                 command.getTitle(),
                 command.getContent(),
                 command.getHourlyPay(),
+                command.getJobStartDate(),
                 command.getValidTil(),
                 OffsetDateTime.now(clock),
                 OffsetDateTime.now(clock),

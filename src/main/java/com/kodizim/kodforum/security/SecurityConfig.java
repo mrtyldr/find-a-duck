@@ -32,10 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/webjars/**",
                         // -- Swagger UI v3 (OpenAPI)
                         "/api-docs/**",
-                        "/swagger-ui/**",
-                        "/countries",
-                        "/dummy/**",
-                        "/i18n/**"
+                        "/swagger-ui/**"
                 ).permitAll()
                 .anyRequest().hasAuthority("STANDARD");
 

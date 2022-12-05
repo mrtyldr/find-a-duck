@@ -19,6 +19,8 @@ public class AddEntryCommand {
     @NotNull
     BigDecimal hourlyPay;
     @NotNull
+    OffsetDateTime jobStartDate;
+    @NotNull
     OffsetDateTime validTil;
 
     List<String> expectedProfessions;
