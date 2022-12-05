@@ -2,6 +2,7 @@ package com.kodizim.kodforum.api;
 
 import com.kodizim.kodforum.BaseTestClass;
 
+import com.kodizim.kodforum.application.TestDataService;
 import com.kodizim.kodforum.domain.company.Company;
 import com.kodizim.kodforum.domain.company.CompanyRepository;
 import com.kodizim.kodforum.domain.entry.EntryRepository;
@@ -33,20 +34,22 @@ class EntryControllerTest extends BaseTestClass {
 
     @Autowired
     CompanyRepository companyRepository;
+    @Autowired
+    TestDataService testDataService;
 
 
     @Test
     @WithMockUser(authorities = "STANDARD",value="company")
     void should_add_Entry() throws Exception {
         var validTil = OffsetDateTime.of(LocalDateTime.of(2022, 12, 25, 17, 0), ZoneOffset.of("+3"));
-        var companyId = addCompany();
+        var companyId = testDataService.addCompany();
         var request = post("/api/entry/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                                                     {
                                                     "category": "FINANCE",
                                                     "title": "Garson Aranıyor",
-                                                    "content": "ufak cafe mize garson arıyoz saati 3 lira",
+                                                    "content": "ufak cafemize garson arıyoz saati 3 lira",
                                                     "hourlyPay": "3.00",
                                                     "validTil": "%s",
                                                     "expectedProfessions" : ["garson"]
@@ -63,7 +66,7 @@ class EntryControllerTest extends BaseTestClass {
                                      "category":"FINANCE",
                                      "companyId":"%s"
                                      ,"title":"Garson Aranıyor",
-                                     "content":"ufak cafe mize garson arıyoz saati 3 lira",
+                                     "content":"ufak cafemize garson arıyoz saati 3 lira",
                                      "hourlyPay":3.00,
                                      "validTil":"2022-12-25T17:00:00+03:00"
                                      }]
@@ -74,20 +77,6 @@ class EntryControllerTest extends BaseTestClass {
 
     }
 
-    private String addCompany() {
-        var company = new Company(
-                "company",
-                "testCompany",
-                "1231231231",
-                "company@company.com",
-                "we are hiring for test",
-                "/home",
-                null,null,null,null
-        );
-        companyRepository.save(company);
-        return company.getCompanyId();
-
-    }
 
 
 }

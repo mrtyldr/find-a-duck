@@ -1,10 +1,10 @@
-package com.kodizim.kodforum.api;
+package com.kodizim.kodforum.api.entry;
 
 
 import com.kodizim.kodforum.api.model.Response;
 import com.kodizim.kodforum.domain.entry.AddEntryCommand;
 import com.kodizim.kodforum.domain.entry.Entry;
-import com.kodizim.kodforum.application.EntryService;
+import com.kodizim.kodforum.application.Entry.EntryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/entry")
@@ -33,9 +32,5 @@ public class EntryController {
         return Response.of(entryService.getEntries(pageable,principal.getName()));
     }
 
-    @PostMapping("/apply/{entryId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void apply(@PathVariable UUID entryId,Principal principal){
-        entryService.apply(entryId, principal.getName());
-    }
+
 }

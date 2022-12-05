@@ -5,7 +5,6 @@ import com.kodizim.kodforum.api.model.ErrorResponse;
 import com.kodizim.kodforum.error.AlreadyExistsException;
 import com.kodizim.kodforum.error.ApiException;
 import com.kodizim.kodforum.error.ErrorCode;
-import com.kodizim.kodforum.error.InProgressException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -59,11 +58,6 @@ public class RestErrorHandler {
 
 
 
-    @ExceptionHandler
-    @ResponseStatus(ACCEPTED)
-    ErrorResponse handle(InProgressException e) {
-        return ErrorResponse.of(ErrorCode.IN_PROGRESS.name(), e.getMessage());
-    }
 
 
 
