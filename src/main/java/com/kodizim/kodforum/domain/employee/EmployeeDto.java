@@ -32,6 +32,8 @@ public class EmployeeDto {
 
     List<String> professions;
 
+    Boolean onboardingDone;
+
     public EmployeeDto(String employeeId, String name,
                        String surname, String phoneNumber,
                        String photoLocationKey, LocalDate birthDate,
@@ -44,5 +46,7 @@ public class EmployeeDto {
         this.birthDate = birthDate;
         this.about = about;
         this.professionIds = (List<UUID>) professionIds;
+        this.onboardingDone = this.name != null;
     }
+
 }
