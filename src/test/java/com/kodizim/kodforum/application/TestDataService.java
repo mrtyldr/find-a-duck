@@ -33,6 +33,7 @@ public class TestDataService {
                 "IT uzmanı",
                 new BigDecimal("25"),
                 OffsetDateTime.now(),
+                OffsetDateTime.now(),
                 List.of("spring")
 
         );
