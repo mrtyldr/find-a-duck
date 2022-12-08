@@ -8,9 +8,9 @@ Job seekers can filter the jobs that they are looking for according to their qua
 Companies and Employees can rate each other.
 
 # Used Technologies
-Java
-Spring Boot
-Spring Data JPA
-postgreSQL
-Swagger
+Java,
+Spring Boot,
+Spring Data JPA,
+postgreSQL,
+Swagger,
 Auth0
