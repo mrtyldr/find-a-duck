@@ -1,0 +1,9 @@
+package com.kodizim.findaduck.domain.entry;
+
+
+public enum Category {
+    FINANCE, BUSINESS_MANAGEMENT, ART,
+    ENGINEERING, HEALTH, HOSPITALITY, IT,
+    LAW, SPORT, MARKETING, MEDIA, CONSTRUCTION,
+    HR, RETAIL, SALES, EDUCATION, LOGISTICS
+}
