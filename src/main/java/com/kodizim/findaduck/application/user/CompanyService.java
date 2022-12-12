@@ -18,11 +18,12 @@ public class CompanyService {
     private final ApplicationRepository applicationRepository;
     private final CompanyRepository companyRepository;
     private final EntryRepository entryRepository;
+
     @Transactional
     public void acceptApplication(UUID applicationId, String userId) {
         var application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new NotFoundException("application not found"));
-        if(!entryRepository.existsByCompanyIdAndId(userId, application.getEntryId()))
+        if (!entryRepository.existsByCompanyIdAndId(userId, application.getEntryId()))
             throw new NotFoundException("entry not found!");
         application.accept();
         applicationRepository.save(application);
@@ -38,17 +39,30 @@ public class CompanyService {
         var company = companyRepository.findByCompanyId(userId)
                 .orElseThrow(() -> new NotFoundException("company not found!"));
         company.companyInitial(
-                command.getCompanyName(),
-                command.getPhoneNumber(),
-                command.getAbout(),
-                command.getPhotoLocationKey(),
-                command.getAddressLine(),
-                command.getCity(),
-                command.getCountry(),
-                command.getPostalCode()
+                command.companyName(),
+                command.phoneNumber(),
+                command.about(),
+                command.photoLocationKey(),
+                command.addressLine(),
+                command.city(),
+                command.country(),
+                command.postalCode()
 
         );
         companyRepository.save(company);
 
+    }
+
+    @Transactional
+    public void rejectApplication(UUID applicationId, String userId) {
+        var application = applicationRepository.findById(applicationId)
+                .orElseThrow(() -> new NotFoundException("application not found"));
+
+        if (!entryRepository.existsByCompanyIdAndId(userId, application.getEntryId()))
+            throw new NotFoundException("entry not found!");
+
+        application.reject();
+
+        applicationRepository.save(application);
     }
 }

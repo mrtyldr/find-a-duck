@@ -33,4 +33,11 @@ public class Job extends AbstractAggregateRoot<Job> {
         this.employeeId = employeeId;
         this.startDate = startDate;
     }
+
+    public void rateEmployee(Integer employeeRating){
+        this.employeeRating = employeeRating;
+    }
+    public void rateCompany(Integer companyRating){
+        this.companyRating = companyRating;
+    }
 }

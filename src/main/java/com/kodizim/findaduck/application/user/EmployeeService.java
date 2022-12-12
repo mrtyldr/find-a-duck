@@ -19,15 +19,15 @@ public class EmployeeService {
     public void employeeInitialSetup(EmployeeInitialSetupCommand command, String userId) {
         var employee = employeeRepository.findByEmployeeId(userId)
                 .orElseThrow(() -> new NotFoundException("employee not found"));
-        addMissingProfessions(command.getProfessions());
-        var professions = professionRepository.findProfessionsByName(command.getProfessions());
+        addMissingProfessions(command.professions());
+        var professions = professionRepository.findProfessionsByName(command.professions());
         employee.employeeInitial(
-                command.getName(),
-                command.getSurname(),
-                command.getPhoneNumber(),
-                command.getPhotoLocationKey(),
-                command.getBirthDate(),
-                command.getAbout(),
+                command.name(),
+                command.surname(),
+                command.phoneNumber(),
+                command.photoLocationKey(),
+                command.birthDate(),
+                command.about(),
                 professions
         );
         employeeRepository.save(employee);

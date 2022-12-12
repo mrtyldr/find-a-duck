@@ -11,17 +11,32 @@ public interface JobRepository extends JpaRepository<Job, UUID> {
     List<Job> findByEmployeeId(String employeeId);
 
     @Query("""
-select new com.kodizim.findaduck.domain.job.JobDto(
-            j.jobId,
-            e.companyId,
-            j.employeeId,
-            j.startDate,
-            e.title,
-            e.content
-)
-from Job j
-    inner join Entry e on j.entryId = e.id
-    where j.employeeId = :employeeId
-""")
-    List<JobDto>getJobDtoByEmployeeId(String employeeId);
+            select new com.kodizim.findaduck.domain.job.JobDto(
+                        j.jobId,
+                        e.companyId,
+                        j.employeeId,
+                        j.startDate,
+                        e.title,
+                        e.content
+            )
+            from Job j
+                inner join Entry e on j.entryId = e.id
+                where j.employeeId = :employeeId
+            """)
+    List<JobDto> getJobDtoByEmployeeId(String employeeId);
+
+    @Query("""
+            select new com.kodizim.findaduck.domain.job.JobDto(
+                        j.jobId,
+                        e.companyId,
+                        j.employeeId,
+                        j.startDate,
+                        e.title,
+                        e.content
+            )
+            from Job j
+                inner join Entry e on j.entryId = e.id
+                where j.employeeId = :companyId
+            """)
+    List<JobDto> getJobDtosForCompany(String companyId);
 }

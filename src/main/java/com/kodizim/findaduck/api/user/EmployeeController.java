@@ -8,6 +8,7 @@ import com.kodizim.findaduck.application.user.EmployeeService;
 import com.kodizim.findaduck.domain.employee.EmployeeDto;
 import com.kodizim.findaduck.domain.employee.EmployeeInitialSetupCommand;
 import com.kodizim.findaduck.domain.job.JobDto;
+import com.kodizim.findaduck.domain.job.rateCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +45,11 @@ public class EmployeeController {
     Response<List<JobDto>> jobs(Principal principal){
         var result = jobService.getEmployeeJobs(principal.getName());
         return Response.of(result);
+    }
+
+    @PostMapping("/rate-company/{jobId}")
+    public void rateCompany(@PathVariable UUID jobId, @RequestBody rateCommand command, Principal principal){
+        jobService.rateCompany(jobId,command.rate(),principal.getName());
     }
 
 }
