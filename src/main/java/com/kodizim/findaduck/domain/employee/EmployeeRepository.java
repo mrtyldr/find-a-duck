@@ -22,17 +22,13 @@ public interface EmployeeRepository extends JpaRepository<Employee, UUID>, Emplo
                 e.photoLocationKey,
                 e.birthDate,
                 e.about,
-                e.professions
+                e.professions,
+                (select AVG(j.employeeRating) from Job j where j.employeeId = :userId)          
                 )
                 from Employee  e
-                where e.employeeId = :userId
+                where e.employeeId = :userId    
             """)
     Optional<EmployeeDto> getEmployeeDto(String userId);
-
-   /* @Query("""
-            select p.professionName from Profession p where p.professionId in (:professionIds)
-            """)
-    List<String> getProfessionName(List<UUID> professionIds);*/
 
     @Component
     @RequiredArgsConstructor
@@ -47,5 +43,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, UUID>, Emplo
                     .setParameter("professionIds", professionIds)
                     .getResultList();
         }
+
     }
 }

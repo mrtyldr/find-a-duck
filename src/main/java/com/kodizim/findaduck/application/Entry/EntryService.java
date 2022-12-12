@@ -11,6 +11,7 @@ import com.kodizim.findaduck.domain.job.Application;
 import com.kodizim.findaduck.domain.job.ApplicationRepository;
 import com.kodizim.findaduck.error.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.builder.ToStringExclude;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,19 +38,19 @@ public class EntryService {
     public void addEntry(AddEntryCommand command, String userId) {
         var user = companyRepository.findByCompanyId(userId)
                 .orElseThrow(() -> new NotFoundException("Company not found!"));
-        addMissingProfessions(command.getExpectedProfessions());
+        addMissingProfessions(command.expectedProfessions());
         var entry = new Entry(
                 UUID.randomUUID(),
-                command.getCategory(),
+                command.category(),
                 user.getCompanyId(),
-                command.getTitle(),
-                command.getContent(),
-                command.getHourlyPay(),
-                command.getJobStartDate(),
-                command.getValidTil(),
+                command.title(),
+                command.content(),
+                command.hourlyPay(),
+                command.jobStartDate(),
+                command.validTil(),
                 OffsetDateTime.now(clock),
                 OffsetDateTime.now(clock),
-                professionRepository.findProfessionsByName(command.getExpectedProfessions())
+                professionRepository.findProfessionsByName(command.expectedProfessions())
         );
         entryRepository.save(entry);
     }
@@ -78,4 +79,5 @@ public class EntryService {
         var application = new Application(entryId,employee.getEmployeeId(),OffsetDateTime.now(clock));
         applicationRepository.save(application);
     }
+
 }

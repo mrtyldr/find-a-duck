@@ -34,10 +34,12 @@ public class EmployeeDto {
 
     Boolean onboardingDone;
 
+    Double rating;
+
     public EmployeeDto(String employeeId, String name,
                        String surname, String phoneNumber,
                        String photoLocationKey, LocalDate birthDate,
-                       String about, Object professionIds) {
+                       String about, Object professionIds, Double rating) {
         this.employeeId = employeeId;
         this.name = name;
         this.surname = surname;
@@ -47,6 +49,7 @@ public class EmployeeDto {
         this.about = about;
         this.professionIds = (List<UUID>) professionIds;
         this.onboardingDone = this.name != null;
+        this.rating = rating;
     }
 
 }

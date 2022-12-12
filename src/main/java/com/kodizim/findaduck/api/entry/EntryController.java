@@ -32,5 +32,4 @@ public class EntryController {
         return Response.of(entryService.getEntries(pageable,principal.getName()));
     }
 
-
 }

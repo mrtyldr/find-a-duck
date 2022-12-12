@@ -13,4 +13,7 @@ public interface EntryRepository extends JpaRepository<Entry, UUID> {
     boolean existsByCompanyIdAndId(String userId, UUID entryId);
 
     List<Entry> findByCompanyId(String company);
+
+    boolean existsByIdAndCompanyId(UUID entryId, String userId);
+
 }
