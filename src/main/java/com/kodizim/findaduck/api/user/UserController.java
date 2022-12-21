@@ -1,9 +1,10 @@
 package com.kodizim.findaduck.api.user;
 
 
+import com.kodizim.findaduck.api.model.Response;
 import com.kodizim.findaduck.application.user.UserService;
 import com.kodizim.findaduck.domain.AddUserCommand;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,20 @@ public class UserController {
     void addUser(@RequestBody AddUserCommand command){
         userService.addUser(command);
     }
-
-
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UserToken{
+        String accessToken;
+    }
+    @Value
+    public static class LoginCommand {
+        String email;
+        String password;
+    }
+    @PostMapping("login")
+    Response<UserToken> login(@RequestBody LoginCommand command){
+        return Response.of(userService.login(command.getEmail(),command.getPassword()));
+    }
 
 }
