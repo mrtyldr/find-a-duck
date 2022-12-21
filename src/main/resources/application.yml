@@ -38,8 +38,10 @@ spring:
 auth0:
   audience: api.kodforum.com
   domain: kodforum.us.auth0.com
-  client-id: XXXXXXXXXX
-  client-secret: XXXXXXXXX
+  client-id: XXXXXXXX
+  client-secret: XXXXXXXXXXXX
+  api-client-id: XXXXXXXXXXXX
+  api-client-secret: XXXXXXXXXXX
   management-audience: https://kodforum.us.auth0.com/api/v2/
   issuer-uri: https://kodforum.us.auth0.com/
   user-database: Username-Password-Authentication
