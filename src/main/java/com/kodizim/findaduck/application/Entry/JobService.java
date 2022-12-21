@@ -32,6 +32,7 @@ public class JobService {
         if(!job.getEmployeeId().equals(userId))
             throw new NotFoundException("job not found");
         job.rateCompany(rate);
+
         jobRepository.save(job);
     }
 
