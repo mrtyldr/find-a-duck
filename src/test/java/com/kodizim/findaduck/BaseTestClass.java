@@ -7,10 +7,7 @@ import com.kodizim.findaduck.domain.company.Company;
 import com.kodizim.findaduck.domain.employee.Employee;
 import com.kodizim.findaduck.domain.entry.Entry;
 import com.kodizim.findaduck.domain.job.Application;
-import lombok.RequiredArgsConstructor;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
@@ -20,10 +17,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
-import javax.persistence.ManyToOne;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -46,6 +43,8 @@ public abstract class BaseTestClass{
     CompanyService companyService;
     @Autowired
     TestDataService testDataService;
+    @Autowired
+    public Clock clock;
 
     protected  Company company;
 

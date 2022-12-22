@@ -4,11 +4,15 @@ import com.kodizim.findaduck.BaseTestClass;
 import com.kodizim.findaduck.application.TestDataService;
 import com.kodizim.findaduck.domain.employee.EmployeeRepository;
 import com.kodizim.findaduck.domain.employee.ProfessionRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.time.Clock;
+import java.time.OffsetDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -24,6 +28,7 @@ class EmployeeControllerTest extends BaseTestClass {
     ProfessionRepository professionRepository;
     @Autowired
     TestDataService testDataService;
+
 
 
     @WithMockUser(authorities = "STANDARD", value = "employee")
@@ -68,10 +73,6 @@ class EmployeeControllerTest extends BaseTestClass {
                 .andExpect(content().json("""
                         {
                       "result":[
-                      {
-                      "entryTitle":"Looking for an IT guy",
-                      "status":"WAITING"}
-                      ,
                       {
                       "entryTitle":"Looking for an IT guy",
                       "status":"WAITING"
