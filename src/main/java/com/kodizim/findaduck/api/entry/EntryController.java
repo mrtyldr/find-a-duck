@@ -22,13 +22,13 @@ public class EntryController {
 
    private final EntryService entryService;
 
-    @PostMapping("/")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void addEntry(@RequestBody AddEntryCommand command, Principal principal){
        entryService.addEntry(command,principal.getName());
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public Response<List<Entry>> getEntries(Pageable pageable, Principal principal) {
         return Response.of(entryService.getEntries(pageable,principal.getName()));
     }

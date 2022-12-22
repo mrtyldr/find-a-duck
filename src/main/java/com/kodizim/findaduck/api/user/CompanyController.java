@@ -28,6 +28,7 @@ public class CompanyController {
     private final JobService jobService;
 
     @PostMapping("/initial-setup")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void companyInitialSetup(@RequestBody CompanyInitialSetupCommand command, Principal principal) {
         if (companyRepository.existsByCompanyId(principal.getName()))
             throw new AlreadyExistsException("company already exists");
