@@ -1,6 +1,7 @@
 package com.kodizim.findaduck.api.user;
 
 import com.kodizim.findaduck.BaseTestClass;
+import com.kodizim.findaduck.application.TestDataService;
 import com.kodizim.findaduck.domain.employee.EmployeeRepository;
 import com.kodizim.findaduck.domain.employee.ProfessionRepository;
 import org.junit.jupiter.api.Test;
@@ -21,9 +22,11 @@ class EmployeeControllerTest extends BaseTestClass {
     EmployeeRepository employeeRepository;
     @Autowired
     ProfessionRepository professionRepository;
+    @Autowired
+    TestDataService testDataService;
 
 
-    @WithMockUser(authorities = "STANDARD",value = "employee")
+    @WithMockUser(authorities = "STANDARD", value = "employee")
     @Test
     void should_add_employee_and_professions() throws Exception {
         var request = post("/api/employee/initial-setup")
@@ -49,8 +52,29 @@ class EmployeeControllerTest extends BaseTestClass {
         assertThat(professionRepository.findAll()).isNotEmpty();
         assertThat(employeeRepository.findByEmployeeId("employee")).isPresent();
 
-        cleanBeforeAndAfter("profession","employee");
+        cleanBeforeAndAfter("profession", "employee");
 
+    }
+
+    @WithMockUser(authorities = "STANDARD", value = "employee")
+    @Test
+    void should_get_applications() throws Exception {
+        var applicationId = testDataService.addEntryAndApplication();
+
+        var request = get("/api/employee/applications")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                        {
+                        "result":{
+                        "entryTitle":"IT uzmanı arıyoz",        
+                        "status":"WAITING"
+                        }
+                        }
+                        """));
+        cleanBeforeAndAfter("profession", "employee", "application", "entry","job","company","profession");
     }
 
 }

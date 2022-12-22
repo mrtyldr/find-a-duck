@@ -20,6 +20,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/company")
 @RequiredArgsConstructor
+@CrossOrigin
 public class CompanyController {
     private final CompanyRepository companyRepository;
     private final CompanyService companyService;

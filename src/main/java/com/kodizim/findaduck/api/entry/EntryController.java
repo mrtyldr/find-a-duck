@@ -16,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/entry")
 @RequiredArgsConstructor
+@CrossOrigin
 public class EntryController {
 
 

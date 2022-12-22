@@ -1,6 +1,8 @@
 package com.kodizim.findaduck.application.user;
 
 import com.kodizim.findaduck.domain.employee.*;
+import com.kodizim.findaduck.domain.job.ApplicationDto;
+import com.kodizim.findaduck.domain.job.ApplicationRepository;
 import com.kodizim.findaduck.error.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import java.util.List;
 public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final ProfessionRepository professionRepository;
+    private final ApplicationRepository applicationRepository;
 
     @Transactional
     public void employeeInitialSetup(EmployeeInitialSetupCommand command, String userId) {
@@ -44,14 +47,19 @@ public class EmployeeService {
     public EmployeeDto getEmployeeDto(String userId) {
 
         var employeeDto = employeeRepository.getEmployeeDto(userId)
-                .orElseThrow(() ->new NotFoundException("user not found!"));
+                .orElseThrow(() -> new NotFoundException("user not found!"));
         var professions = employeeRepository.getProfessionName(employeeDto.getProfessionIds());
         employeeDto.setProfessions(professions);
         return employeeDto;
     }
 
     public void addEmployeeUser(String userId, String email) {
-        var employee = new Employee(userId,email);
+        var employee = new Employee(userId, email);
         employeeRepository.save(employee);
+    }
+
+    public ApplicationDto getApplications(String userId) {
+        return applicationRepository.getApplicationDto(userId)
+                .orElseThrow(() -> new NotFoundException("application not found"));
     }
 }

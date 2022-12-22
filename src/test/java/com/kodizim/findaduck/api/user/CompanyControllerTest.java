@@ -40,13 +40,13 @@ class CompanyControllerTest extends BaseTestClass {
     TestDataService testDataService;
 
     @Test
-    @WithMockUser(authorities = "STANDARD",username = "company")
+    @WithMockUser(authorities = "STANDARD", username = "company")
     void acceptApplication() throws Exception {
         var applicationId = testDataService.addEntryAndApplication();
-        var request = post("/api/company/accept-application/{applicationId}",applicationId);
+        var request = post("/api/company/accept-application/{applicationId}", applicationId);
         mockMvc.perform(request).andExpect(status().isNoContent());
         assertThat(jobRepository.findAll()).isNotEmpty();
         assertThat(jobRepository.findByEmployeeId("employee")).isNotEmpty();
-        cleanBeforeAndAfter("entry","job");
+        cleanBeforeAndAfter("entry", "job", "application","employee","company","profession");
     }
 }
