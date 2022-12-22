@@ -55,6 +55,7 @@ public class EntryService {
         entryRepository.save(entry);
     }
 
+
     public List<Entry> getEntries(Pageable pageable, String userId) {
 
         return entryRepository.findAll(pageable).getContent();

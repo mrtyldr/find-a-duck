@@ -41,7 +41,7 @@ class EntryControllerTest extends BaseTestClass {
     @WithMockUser(authorities = "STANDARD",value="company")
     void should_add_Entry() throws Exception {
         var validTil = OffsetDateTime.of(LocalDateTime.of(2022, 12, 25, 17, 0), ZoneOffset.of("+3"));
-        var companyId = testDataService.addCompany();
+
         var request = post("/api/entry/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
@@ -60,7 +60,17 @@ class EntryControllerTest extends BaseTestClass {
         mockMvc.perform(get("/api/entry/"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
-                                     {"result":[
+                                     {
+                                     "result":[
+                                     {
+                                     "id":"%s",
+                                     "category":"IT",
+                                     "companyId":"company",
+                                     "title":"Looking for an IT guy",
+                                     "content":"IT guy",
+                                     "hourlyPay":12,
+                                     "status":"ACTIVE"
+                                     },
                                      {
                                      "category":"FINANCE",
                                      "companyId":"%s"
@@ -70,9 +80,8 @@ class EntryControllerTest extends BaseTestClass {
                                      "validTil":"2022-12-25T17:00:00+03:00"
                                      }]
                                      }
-                        """.formatted(companyId)));
+                        """.formatted(entry.getId(),company.getCompanyId())));
 
-        cleanBeforeAndAfter("entry","company");
 
     }
 

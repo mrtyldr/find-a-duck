@@ -6,6 +6,8 @@ import com.kodizim.findaduck.application.Entry.JobService;
 import com.kodizim.findaduck.application.user.CompanyService;
 import com.kodizim.findaduck.domain.company.CompanyInitialSetupCommand;
 import com.kodizim.findaduck.domain.company.CompanyRepository;
+import com.kodizim.findaduck.domain.job.ApplicationDto;
+import com.kodizim.findaduck.domain.job.ApplicationRepository;
 import com.kodizim.findaduck.domain.job.JobDto;
 import com.kodizim.findaduck.domain.job.rateCommand;
 import com.kodizim.findaduck.error.AlreadyExistsException;
@@ -26,6 +28,7 @@ public class CompanyController {
     private final CompanyService companyService;
 
     private final JobService jobService;
+    private final ApplicationRepository applicationRepository;
 
     @PostMapping("/initial-setup")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -56,6 +59,15 @@ public class CompanyController {
     @PostMapping("/rate-employee/{jobId}")
     public void rateEmployee(@PathVariable UUID jobId, @RequestBody rateCommand command, Principal principal){
         jobService.rateEmployee(jobId,command.rate(),principal.getName());
+    }
+
+    @GetMapping("/applications")
+    Response<List<ApplicationDto>> getApplications(Principal principal){
+        return Response.of(applicationRepository.getCompanyApplicationDto(principal.getName()));
+    }
+    @GetMapping("/applications/{entryId}")
+    Response<List<ApplicationDto>> getApplications(@PathVariable UUID entryId,Principal principal){
+        return Response.of(applicationRepository.getEntryApplications(entryId,principal.getName()));
     }
 
 }

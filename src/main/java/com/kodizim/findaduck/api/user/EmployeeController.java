@@ -57,7 +57,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/applications")
-    public Response<ApplicationDto> getApplications(Principal principal) {
+    public Response<List<ApplicationDto>> getApplications(Principal principal) {
         var result = employeeService.getApplications(principal.getName());
         return Response.of(result);
     }

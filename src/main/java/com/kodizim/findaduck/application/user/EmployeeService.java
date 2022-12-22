@@ -58,8 +58,7 @@ public class EmployeeService {
         employeeRepository.save(employee);
     }
 
-    public ApplicationDto getApplications(String userId) {
-        return applicationRepository.getApplicationDto(userId)
-                .orElseThrow(() -> new NotFoundException("application not found"));
+    public List<ApplicationDto> getApplications(String userId) {
+        return applicationRepository.getApplicationDto(userId);
     }
 }

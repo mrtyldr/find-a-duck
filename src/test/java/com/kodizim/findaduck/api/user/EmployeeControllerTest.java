@@ -59,7 +59,6 @@ class EmployeeControllerTest extends BaseTestClass {
     @WithMockUser(authorities = "STANDARD", value = "employee")
     @Test
     void should_get_applications() throws Exception {
-        var applicationId = testDataService.addEntryAndApplication();
 
         var request = get("/api/employee/applications")
                 .contentType(MediaType.APPLICATION_JSON);
@@ -68,13 +67,19 @@ class EmployeeControllerTest extends BaseTestClass {
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
-                        "result":{
-                        "entryTitle":"IT uzmanı arıyoz",        
-                        "status":"WAITING"
-                        }
+                      "result":[
+                      {
+                      "entryTitle":"Looking for an IT guy",
+                      "status":"WAITING"}
+                      ,
+                      {
+                      "entryTitle":"Looking for an IT guy",
+                      "status":"WAITING"
+                      }
+                      ]
                         }
                         """));
-        cleanBeforeAndAfter("profession", "employee", "application", "entry","job","company","profession");
+
     }
 
 }

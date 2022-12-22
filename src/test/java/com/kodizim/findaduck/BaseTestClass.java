@@ -1,8 +1,16 @@
 package com.kodizim.findaduck;
 
+import com.kodizim.findaduck.application.TestDataService;
 import com.kodizim.findaduck.application.user.CompanyService;
 import com.kodizim.findaduck.application.user.EmployeeService;
+import com.kodizim.findaduck.domain.company.Company;
+import com.kodizim.findaduck.domain.employee.Employee;
+import com.kodizim.findaduck.domain.entry.Entry;
+import com.kodizim.findaduck.domain.job.Application;
+import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
@@ -15,6 +23,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
+import javax.persistence.ManyToOne;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -35,6 +44,17 @@ public abstract class BaseTestClass{
 
     @Autowired
     CompanyService companyService;
+    @Autowired
+    TestDataService testDataService;
+
+    protected  Company company;
+
+    protected  Entry entry;
+
+    protected Application application;
+
+    protected Employee employee;
+
 
 
     @BeforeEach
@@ -42,8 +62,16 @@ public abstract class BaseTestClass{
         JdbcTestUtils.deleteFromTables(jdbcTemplate,tablesToClean.toArray(String[]::new));
         companyService.addCompanyUser("company","johndoe@mail.com");
         employeeService.addEmployeeUser("employee","janedoe@mail.com");
-    }
+        if(company == null)
+           company = testDataService.addCompany();
+        if(employee == null)
+            employee = testDataService.addEmployee();
+        if(entry == null)
+            entry = testDataService.addEntry();
+        if(application == null && entry != null)
+            application = testDataService.addApplication(entry);
 
+    }
 
 
 
@@ -66,4 +94,6 @@ public abstract class BaseTestClass{
             };
         }
     }
+
+
 }

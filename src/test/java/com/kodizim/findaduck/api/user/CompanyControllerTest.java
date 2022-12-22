@@ -42,13 +42,10 @@ class CompanyControllerTest extends BaseTestClass {
 
     @Test
     @WithMockUser(authorities = "STANDARD", username = "company")
-    @Disabled("the tests fail at maven verify but passes every other scenario later find a way to write a better test")
     void acceptApplication() throws Exception {
-        var applicationId = testDataService.addEntryAndApplication();
-        var request = post("/api/company/accept-application/{applicationId}", applicationId);
+        var request = post("/api/company/accept-application/{applicationId}", application.getApplicationId());
         mockMvc.perform(request).andExpect(status().isNoContent());
         assertThat(jobRepository.findAll()).isNotEmpty();
         assertThat(jobRepository.findByEmployeeId("employee")).isNotEmpty();
-        cleanBeforeAndAfter("entry", "job", "application","employee","company","profession");
     }
 }
