@@ -7,6 +7,7 @@ import com.kodizim.findaduck.application.Entry.JobService;
 import com.kodizim.findaduck.application.user.EmployeeService;
 import com.kodizim.findaduck.domain.employee.EmployeeDto;
 import com.kodizim.findaduck.domain.employee.EmployeeInitialSetupCommand;
+import com.kodizim.findaduck.domain.entry.Advertisement;
 import com.kodizim.findaduck.domain.job.ApplicationDto;
 import com.kodizim.findaduck.domain.job.JobDto;
 import com.kodizim.findaduck.domain.job.rateCommand;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -60,6 +62,9 @@ public class EmployeeController {
     public Response<List<ApplicationDto>> getApplications(Principal principal) {
         var result = employeeService.getApplications(principal.getName());
         return Response.of(result);
+    }
+    Response<Set<Advertisement>> getAdvertisements(Principal principal){
+        return Response.of(entryService.getAdvertisements(principal.getName()));
     }
 
 }

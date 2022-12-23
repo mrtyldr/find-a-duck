@@ -4,16 +4,11 @@ import com.kodizim.findaduck.BaseTestClass;
 import com.kodizim.findaduck.application.TestDataService;
 import com.kodizim.findaduck.domain.employee.EmployeeRepository;
 import com.kodizim.findaduck.domain.employee.ProfessionRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.time.Clock;
-import java.time.OffsetDateTime;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -74,12 +69,13 @@ class EmployeeControllerTest extends BaseTestClass {
                         {
                       "result":[
                       {
+                      "applicationId": "%s",
                       "entryTitle":"Looking for an IT guy",
                       "status":"WAITING"
                       }
                       ]
                         }
-                        """));
+                        """.formatted(application.getApplicationId())));
 
     }
 

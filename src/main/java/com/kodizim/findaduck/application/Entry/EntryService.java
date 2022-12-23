@@ -4,14 +4,11 @@ import com.kodizim.findaduck.domain.company.CompanyRepository;
 import com.kodizim.findaduck.domain.employee.EmployeeRepository;
 import com.kodizim.findaduck.domain.employee.Profession;
 import com.kodizim.findaduck.domain.employee.ProfessionRepository;
-import com.kodizim.findaduck.domain.entry.AddEntryCommand;
-import com.kodizim.findaduck.domain.entry.Entry;
-import com.kodizim.findaduck.domain.entry.EntryRepository;
+import com.kodizim.findaduck.domain.entry.*;
 import com.kodizim.findaduck.domain.job.Application;
 import com.kodizim.findaduck.domain.job.ApplicationRepository;
 import com.kodizim.findaduck.error.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.builder.ToStringExclude;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Clock;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -81,4 +80,26 @@ public class EntryService {
         applicationRepository.save(application);
     }
 
+    public Set<Advertisement> getAdvertisements(String employeeId) {
+        var entryDtos = entryRepository.getEntryDto(employeeId);
+        return entryDtos.stream().map(e -> toAdvertisement(e,employeeId))
+                .collect(Collectors.toSet());
+    }
+
+    private Advertisement toAdvertisement(EntryDto entryDto,String employeeId){
+        var professionNames = employeeRepository.getProfessionName((List<UUID>) entryDto.getExpectedProfessionIds());
+        return new Advertisement(
+                entryDto.getEntryId(),
+                entryDto.getCompanyName(),
+                entryDto.getCategory(),
+                entryDto.getHourlyPay(),
+                entryDto.getTitle(),
+                entryDto.getContent(),
+                entryDto.getJobStartDate(),
+                entryDto.getValidTil(),
+                entryDto.getCreatedOn(),
+                applicationRepository.existsByEntryIdAndEmployeeId(entryDto.getEntryId(),employeeId),
+                professionNames
+        );
+    }
 }

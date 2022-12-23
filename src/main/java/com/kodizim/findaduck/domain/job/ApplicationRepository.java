@@ -12,6 +12,7 @@ public interface ApplicationRepository extends JpaRepository<Application, UUID> 
 
     @Query("""
             select new com.kodizim.findaduck.domain.job.ApplicationDto(
+                a.applicationId,
                 e.title,
                 a.appliedOn,
                 a.status
@@ -24,6 +25,7 @@ public interface ApplicationRepository extends JpaRepository<Application, UUID> 
 
     @Query("""
             select new com.kodizim.findaduck.domain.job.ApplicationDto(
+                a.applicationId,
                 e.title,
                 a.appliedOn,
                 a.status
@@ -36,6 +38,7 @@ public interface ApplicationRepository extends JpaRepository<Application, UUID> 
 
     @Query("""
             select new com.kodizim.findaduck.domain.job.ApplicationDto(
+                a.applicationId,
                 e.title,
                 a.appliedOn,
                 a.status
@@ -47,4 +50,6 @@ public interface ApplicationRepository extends JpaRepository<Application, UUID> 
     List<ApplicationDto> getEntryApplications(UUID entryId, String companyUserId);
 
     Optional<Application> findByEmployeeIdAndEntryId(String userId, UUID entryId);
+
+    boolean existsByEntryIdAndEmployeeId(UUID entryId, String employeeId);
 }

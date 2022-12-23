@@ -28,9 +28,4 @@ public class EntryController {
        entryService.addEntry(command,principal.getName());
     }
 
-    @GetMapping("")
-    public Response<List<Entry>> getEntries(Pageable pageable, Principal principal) {
-        return Response.of(entryService.getEntries(pageable,principal.getName()));
-    }
-
 }
