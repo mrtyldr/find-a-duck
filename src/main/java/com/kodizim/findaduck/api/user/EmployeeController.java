@@ -36,7 +36,7 @@ public class EmployeeController {
         employeeService.employeeInitialSetup(command, principal.getName());
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public Response<EmployeeDto> getEmployeeInfo(Principal principal) {
         return Response.of(employeeService.getEmployeeDto(principal.getName()));
     }

@@ -2,9 +2,9 @@ package com.kodizim.findaduck.application.user;
 
 import com.kodizim.findaduck.application.Entry.EntryService;
 import com.kodizim.findaduck.domain.company.Company;
+import com.kodizim.findaduck.domain.company.CompanyDto;
 import com.kodizim.findaduck.domain.company.CompanyInitialSetupCommand;
 import com.kodizim.findaduck.domain.company.CompanyRepository;
-import com.kodizim.findaduck.domain.entry.Advertisement;
 import com.kodizim.findaduck.domain.entry.EntryRepository;
 import com.kodizim.findaduck.domain.job.ApplicationRepository;
 import com.kodizim.findaduck.error.NotFoundException;
@@ -71,4 +71,8 @@ public class CompanyService {
     }
 
 
+    public CompanyDto getCompanyDto(String companyId){
+        return companyRepository.getCompanyDto(companyId)
+                .orElseThrow(() -> new NotFoundException("company not Found"));
+    }
 }

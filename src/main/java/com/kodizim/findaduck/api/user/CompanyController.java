@@ -5,6 +5,7 @@ import com.kodizim.findaduck.api.model.Response;
 import com.kodizim.findaduck.application.Entry.EntryService;
 import com.kodizim.findaduck.application.Entry.JobService;
 import com.kodizim.findaduck.application.user.CompanyService;
+import com.kodizim.findaduck.domain.company.CompanyDto;
 import com.kodizim.findaduck.domain.company.CompanyInitialSetupCommand;
 import com.kodizim.findaduck.domain.company.CompanyRepository;
 import com.kodizim.findaduck.domain.entry.Advertisement;
@@ -75,6 +76,10 @@ public class CompanyController {
     @GetMapping("/advertisements")
     Response<List<Advertisement>> getAdvertisements(Principal principal){
         return Response.of(entryService.getAdvertisementsForCompany(principal.getName()));
+    }
+    @GetMapping("")
+    Response<CompanyDto> getCompany(Principal principal){
+        return Response.of(companyService.getCompanyDto(principal.getName()));
     }
 
 }
