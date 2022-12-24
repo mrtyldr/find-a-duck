@@ -56,4 +56,6 @@ public interface EntryRepository extends JpaRepository<Entry, UUID> {
             """
     )
     List<EntryDto> getEntryDtoForCompany(String companyId);
+    @Query("select e from Entry e where e.status = 'ACTIVE' ")
+    List<Entry> getActiveEntries();
 }

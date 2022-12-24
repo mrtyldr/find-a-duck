@@ -10,6 +10,7 @@ import com.kodizim.findaduck.domain.job.ApplicationRepository;
 import com.kodizim.findaduck.error.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -106,5 +107,16 @@ public class EntryService {
         var entryDtos = entryRepository.getEntryDtoForCompany(companyId);
         return entryDtos.stream().map(e -> toAdvertisement(e,companyId))
                 .collect(Collectors.toList());
+    }
+    @Scheduled(cron = "0 0 0,6,12,18 ? * * *")
+    private void updateEntries(){
+        var activeEntries = entryRepository.getActiveEntries();
+        activeEntries.forEach(this::markClosedEntries);
+    }
+    @Transactional
+    public void markClosedEntries(Entry entry){
+        if(entry.getValidTil().isAfter(OffsetDateTime.now(clock)))
+            entry.entryClosed();
+        entryRepository.save(entry);
     }
 }
