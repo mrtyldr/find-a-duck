@@ -63,7 +63,7 @@ public class EmployeeController {
         var result = employeeService.getApplications(principal.getName());
         return Response.of(result);
     }
-    Response<Set<Advertisement>> getAdvertisements(Principal principal){
+    Response<List<Advertisement>> getAdvertisements(Principal principal){
         return Response.of(entryService.getAdvertisements(principal.getName()));
     }
 

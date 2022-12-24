@@ -2,10 +2,12 @@ package com.kodizim.findaduck.api.user;
 
 
 import com.kodizim.findaduck.api.model.Response;
+import com.kodizim.findaduck.application.Entry.EntryService;
 import com.kodizim.findaduck.application.Entry.JobService;
 import com.kodizim.findaduck.application.user.CompanyService;
 import com.kodizim.findaduck.domain.company.CompanyInitialSetupCommand;
 import com.kodizim.findaduck.domain.company.CompanyRepository;
+import com.kodizim.findaduck.domain.entry.Advertisement;
 import com.kodizim.findaduck.domain.job.ApplicationDto;
 import com.kodizim.findaduck.domain.job.ApplicationRepository;
 import com.kodizim.findaduck.domain.job.JobDto;
@@ -29,6 +31,7 @@ public class CompanyController {
 
     private final JobService jobService;
     private final ApplicationRepository applicationRepository;
+    private final EntryService entryService;
 
     @PostMapping("/initial-setup")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -68,6 +71,10 @@ public class CompanyController {
     @GetMapping("/applications/{entryId}")
     Response<List<ApplicationDto>> getApplications(@PathVariable UUID entryId,Principal principal){
         return Response.of(applicationRepository.getEntryApplications(entryId,principal.getName()));
+    }
+    @GetMapping("/advertisements")
+    Response<List<Advertisement>> getAdvertisements(Principal principal){
+        return Response.of(entryService.getAdvertisementsForCompany(principal.getName()));
     }
 
 }

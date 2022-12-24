@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Clock;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -80,10 +79,10 @@ public class EntryService {
         applicationRepository.save(application);
     }
 
-    public Set<Advertisement> getAdvertisements(String employeeId) {
+    public List<Advertisement> getAdvertisements(String employeeId) {
         var entryDtos = entryRepository.getEntryDto(employeeId);
         return entryDtos.stream().map(e -> toAdvertisement(e,employeeId))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
     private Advertisement toAdvertisement(EntryDto entryDto,String employeeId){
@@ -101,5 +100,11 @@ public class EntryService {
                 applicationRepository.existsByEntryIdAndEmployeeId(entryDto.getEntryId(),employeeId),
                 professionNames
         );
+    }
+
+    public List<Advertisement> getAdvertisementsForCompany(String companyId) {
+        var entryDtos = entryRepository.getEntryDtoForCompany(companyId);
+        return entryDtos.stream().map(e -> toAdvertisement(e,companyId))
+                .collect(Collectors.toList());
     }
 }
