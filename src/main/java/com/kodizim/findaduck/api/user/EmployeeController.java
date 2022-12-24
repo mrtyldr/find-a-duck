@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -63,6 +62,7 @@ public class EmployeeController {
         var result = employeeService.getApplications(principal.getName());
         return Response.of(result);
     }
+    @GetMapping("/advertisements")
     Response<List<Advertisement>> getAdvertisements(Principal principal){
         return Response.of(entryService.getAdvertisements(principal.getName()));
     }
