@@ -25,29 +25,6 @@ class EmployeeServiceTest extends BaseTestClass {
     @Autowired
     JobRepository jobRepository;
 
-    @Test
-    void getEmployeeDto() {
-       addEmployee();
-       var employeeDto = employeeService.getEmployeeDto("employee");
-       assertThat(employeeDto).isNotNull();
-       assertThat(employeeDto.getProfessions()).containsExactlyInAnyOrder("spring","java","sql");
-       cleanBeforeAndAfter("employee");
-    }
 
-    private void addEmployee(){
 
-        //TODO: make this test more reliable and comprehensive
-        employeeService.employeeInitialSetup(new EmployeeInitialSetupCommand(
-                "murat",
-                "yıldırım",
-                "123123",
-                "/ev",
-                LocalDate.of(1999,3,24),
-                "selam ben murat",
-                List.of("spring","java","sql")
-        ),"employee");
-        Job job = new Job(UUID.randomUUID(),UUID.randomUUID(),"employee", OffsetDateTime.now());
-        job.rateEmployee(3);
-        jobRepository.save(job);
-    }
 }

@@ -1,7 +1,12 @@
 package com.kodizim.findaduck;
 
+import com.kodizim.findaduck.application.TestDataService;
 import com.kodizim.findaduck.application.user.CompanyService;
 import com.kodizim.findaduck.application.user.EmployeeService;
+import com.kodizim.findaduck.domain.company.Company;
+import com.kodizim.findaduck.domain.employee.Employee;
+import com.kodizim.findaduck.domain.entry.Entry;
+import com.kodizim.findaduck.domain.job.Application;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
@@ -14,13 +19,18 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
+import java.time.Clock;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.List;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public abstract class BaseTestClass{
+public abstract class BaseTestClass {
     private final LinkedHashSet<String> tablesToClean = new LinkedHashSet<String>();
 
     @Autowired
@@ -31,16 +41,38 @@ public abstract class BaseTestClass{
 
     @Autowired
     CompanyService companyService;
+    @Autowired
+    TestDataService testDataService;
+    @Autowired
+    public Clock clock;
+
+    protected Company company;
+
+    protected Entry entry;
+
+    protected Application application;
+
+    protected Employee employee;
 
 
     @BeforeEach
-    public void beforeEach(){
-        JdbcTestUtils.deleteFromTables(jdbcTemplate,tablesToClean.toArray(String[]::new));
-        companyService.addCompanyUser("company","johndoe@mail.com");
-        employeeService.addEmployeeUser("employee","janedoe@mail.com");
+    public void beforeEach() {
+        tablesToClean.addAll(List.of("employee", "application", "company", "entry", "job", "profession"));
+
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, tablesToClean.toArray(String[]::new));
+        companyService.addCompanyUser("company", "johndoe@mail.com");
+        employeeService.addEmployeeUser("employee", "janedoe@mail.com");
+        if (company == null)
+            company = testDataService.addCompany();
+        if (employee == null)
+            employee = testDataService.addEmployee();
+        if (entry == null)
+            entry = testDataService.addEntry();
+        if (application == null)
+            application = testDataService.addApplication(entry);
+
+
     }
-
-
 
 
     protected void cleanBeforeAndAfter(String... tableNames) {
@@ -60,4 +92,6 @@ public abstract class BaseTestClass{
             };
         }
     }
+
+
 }

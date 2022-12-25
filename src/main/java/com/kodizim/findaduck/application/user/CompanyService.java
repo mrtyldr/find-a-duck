@@ -1,6 +1,8 @@
 package com.kodizim.findaduck.application.user;
 
+import com.kodizim.findaduck.application.Entry.EntryService;
 import com.kodizim.findaduck.domain.company.Company;
+import com.kodizim.findaduck.domain.company.CompanyDto;
 import com.kodizim.findaduck.domain.company.CompanyInitialSetupCommand;
 import com.kodizim.findaduck.domain.company.CompanyRepository;
 import com.kodizim.findaduck.domain.entry.EntryRepository;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.UUID;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +21,7 @@ public class CompanyService {
     private final ApplicationRepository applicationRepository;
     private final CompanyRepository companyRepository;
     private final EntryRepository entryRepository;
+    private final EntryService entryService;
 
     @Transactional
     public void acceptApplication(UUID applicationId, String userId) {
@@ -64,5 +68,11 @@ public class CompanyService {
         application.reject();
 
         applicationRepository.save(application);
+    }
+
+
+    public CompanyDto getCompanyDto(String companyId){
+        return companyRepository.getCompanyDto(companyId)
+                .orElseThrow(() -> new NotFoundException("company not Found"));
     }
 }
