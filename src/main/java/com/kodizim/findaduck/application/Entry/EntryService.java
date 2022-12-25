@@ -9,7 +9,6 @@ import com.kodizim.findaduck.domain.job.Application;
 import com.kodizim.findaduck.domain.job.ApplicationRepository;
 import com.kodizim.findaduck.error.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,13 +51,10 @@ public class EntryService {
                 professionRepository.findProfessionsByName(command.expectedProfessions())
         );
         entryRepository.save(entry);
+        entryRepository.refreshActiveEntries();
     }
 
 
-    public List<Entry> getEntries(Pageable pageable, String userId) {
-
-        return entryRepository.findAll(pageable).getContent();
-    }
 
     private List<UUID> getProfessionIds(List<String> professionNames){
         return professionRepository.findProfessionsByName(professionNames);
@@ -112,6 +108,7 @@ public class EntryService {
     private void updateEntries(){
         var activeEntries = entryRepository.getActiveEntries();
         activeEntries.forEach(this::markClosedEntries);
+        entryRepository.refreshActiveEntries();
     }
     @Transactional
     public void markClosedEntries(Entry entry){

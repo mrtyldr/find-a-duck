@@ -36,7 +36,7 @@ public interface JobRepository extends JpaRepository<Job, UUID> {
             )
             from Job j
                 inner join Entry e on j.entryId = e.id
-                where j.employeeId = :companyId
+                where e.companyId = :companyId
             """)
     List<JobDto> getJobDtosForCompany(String companyId);
 }

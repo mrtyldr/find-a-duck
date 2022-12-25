@@ -13,7 +13,6 @@ import com.kodizim.findaduck.domain.job.ApplicationDto;
 import com.kodizim.findaduck.domain.job.ApplicationRepository;
 import com.kodizim.findaduck.domain.job.JobDto;
 import com.kodizim.findaduck.domain.job.rateCommand;
-import com.kodizim.findaduck.error.AlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -37,8 +36,6 @@ public class CompanyController {
     @PostMapping("/initial-setup")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void companyInitialSetup(@RequestBody CompanyInitialSetupCommand command, Principal principal) {
-        if (companyRepository.existsByCompanyId(principal.getName()))
-            throw new AlreadyExistsException("company already exists");
         companyService.companyInitialSetup(command,principal.getName());
     }
 
