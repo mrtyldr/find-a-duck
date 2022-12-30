@@ -34,9 +34,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, UUID>, Emplo
     @Query("""
            select new com.kodizim.findaduck.domain.UserInfo(
            e.employeeId,
-           (select case when emp.name is not null then true else false end
-           from Employee emp where emp.employeeId = :id
-           )
+           (case when e.name is not null then true else false end)
            )
            from Employee e where e.employeeId = :id
 """

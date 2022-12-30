@@ -41,7 +41,7 @@ public class UserController {
         return Response.of(userService.login(command.getEmail(),command.getPassword()));
     }
 
-    @GetMapping("/get-userinfo")
+    @GetMapping("user-info")
     Response<UserInfo> getUser(Principal principal){
         return Response.of(userService.getUserInfo(principal.getName()));
     }

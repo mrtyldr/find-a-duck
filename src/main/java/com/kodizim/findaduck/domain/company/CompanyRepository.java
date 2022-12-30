@@ -28,9 +28,7 @@ public interface CompanyRepository extends JpaRepository<Company, UUID> {
     @Query("""
      select new com.kodizim.findaduck.domain.UserInfo(
            c.companyId,
-           (select case when cmp.companyName is not null then true else false end
-           from Company cmp  where cmp.companyId = :id
-           )
+           (case when c.companyName is not null then true else false end)
            )
            from Company c where c.companyId = :id
 """)
