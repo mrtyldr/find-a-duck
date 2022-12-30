@@ -1,5 +1,6 @@
 package com.kodizim.findaduck.domain.employee;
 
+import com.kodizim.findaduck.domain.UserInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -29,6 +30,20 @@ public interface EmployeeRepository extends JpaRepository<Employee, UUID>, Emplo
                 where e.employeeId = :userId    
             """)
     Optional<EmployeeDto> getEmployeeDto(String userId);
+
+    @Query("""
+           select new com.kodizim.findaduck.domain.UserInfo(
+           e.employeeId,
+           (select case when emp.name is not null then true else false end
+           from Employee emp where emp.employeeId = :id
+           )
+           )
+           from Employee e where e.employeeId = :id
+"""
+    )
+    Optional<UserInfo> isOnboardingDone(String id);
+
+    boolean existsByEmployeeId(String id);
 
     @Component
     @RequiredArgsConstructor
