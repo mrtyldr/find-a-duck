@@ -16,7 +16,7 @@ class UserControllerTest extends BaseTestClass {
     @WithMockUser(authorities = "STANDARD", value = "company")
     @Test
     void should_get_userInfo() throws Exception {
-        mockMvc.perform(get("/api/get-userinfo"))
+        mockMvc.perform(get("/api/user-info"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         {
