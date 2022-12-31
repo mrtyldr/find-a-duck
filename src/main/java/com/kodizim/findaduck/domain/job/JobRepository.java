@@ -13,7 +13,7 @@ public interface JobRepository extends JpaRepository<Job, UUID> {
     @Query("""
             select new com.kodizim.findaduck.domain.job.JobDto(
                         j.jobId,
-                        e.companyId,
+                        c.companyName,
                         j.employeeId,
                         j.startDate,
                         e.title,
@@ -21,6 +21,7 @@ public interface JobRepository extends JpaRepository<Job, UUID> {
             )
             from Job j
                 inner join Entry e on j.entryId = e.id
+                inner join Company c on e.companyId = c.companyName
                 where j.employeeId = :employeeId
             """)
     List<JobDto> getJobDtoByEmployeeId(String employeeId);
@@ -28,7 +29,7 @@ public interface JobRepository extends JpaRepository<Job, UUID> {
     @Query("""
             select new com.kodizim.findaduck.domain.job.JobDto(
                         j.jobId,
-                        e.companyId,
+                        c.companyName,
                         j.employeeId,
                         j.startDate,
                         e.title,
@@ -36,6 +37,7 @@ public interface JobRepository extends JpaRepository<Job, UUID> {
             )
             from Job j
                 inner join Entry e on j.entryId = e.id
+                inner join Company c on e.companyId = c.companyId
                 where e.companyId = :companyId
             """)
     List<JobDto> getJobDtosForCompany(String companyId);
