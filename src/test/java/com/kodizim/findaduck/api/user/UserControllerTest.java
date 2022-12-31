@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserControllerTest extends BaseTestClass {
     @Autowired
     MockMvc mockMvc;
+
     @WithMockUser(authorities = "STANDARD", value = "company")
     @Test
     void should_get_userInfo() throws Exception {
