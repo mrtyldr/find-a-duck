@@ -4,5 +4,5 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-public record rateCommand(@NotNull @Min(1) @Max(5) Integer rate) {
+public record rateCommand(@NotNull @Min(1) @Max(5) String rate) {
 }

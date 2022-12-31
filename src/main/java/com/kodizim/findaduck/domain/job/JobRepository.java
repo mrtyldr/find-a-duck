@@ -17,7 +17,8 @@ public interface JobRepository extends JpaRepository<Job, UUID> {
                         j.employeeId,
                         j.startDate,
                         e.title,
-                        e.content
+                        e.content,
+                        j.companyRating
             )
             from Job j
                 inner join Entry e on j.entryId = e.id
@@ -33,7 +34,8 @@ public interface JobRepository extends JpaRepository<Job, UUID> {
                         j.employeeId,
                         j.startDate,
                         e.title,
-                        e.content
+                        e.content,
+                        j.employeeRating
             )
             from Job j
                 inner join Entry e on j.entryId = e.id

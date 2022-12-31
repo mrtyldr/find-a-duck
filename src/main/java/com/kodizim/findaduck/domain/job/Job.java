@@ -6,6 +6,7 @@ import org.springframework.data.domain.AbstractAggregateRoot;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -23,9 +24,9 @@ public class Job extends AbstractAggregateRoot<Job> {
 
     OffsetDateTime startDate;
 
-    private Integer employeeRating;
+    private BigDecimal employeeRating;
 
-    private Integer companyRating;
+    private BigDecimal companyRating;
 
     public Job(UUID jobId, UUID entryId, String employeeId,OffsetDateTime startDate) {
         this.jobId = jobId;
@@ -34,10 +35,10 @@ public class Job extends AbstractAggregateRoot<Job> {
         this.startDate = startDate;
     }
 
-    public void rateEmployee(Integer employeeRating){
+    public void rateEmployee(BigDecimal employeeRating){
         this.employeeRating = employeeRating;
     }
-    public void rateCompany(Integer companyRating){
+    public void rateCompany(BigDecimal companyRating){
         this.companyRating = companyRating;
     }
 }
