@@ -14,11 +14,14 @@ public interface ApplicationRepository extends JpaRepository<Application, UUID> 
             select new com.kodizim.findaduck.domain.job.ApplicationDto(
                 a.applicationId,
                 e.title,
+                emp.name,
+                emp.surname,      
                 a.appliedOn,
                 a.status
             )
                 from Application a
                 inner join Entry e on a.entryId = e.id
+                inner join Employee emp on a.employeeId = emp.employeeId
                 where a.employeeId = :userId
             """)
     List<ApplicationDto> getApplicationDto(String userId);
@@ -27,11 +30,14 @@ public interface ApplicationRepository extends JpaRepository<Application, UUID> 
             select new com.kodizim.findaduck.domain.job.ApplicationDto(
                 a.applicationId,
                 e.title,
+                emp.name,
+                emp.surname,
                 a.appliedOn,
                 a.status
             )
                 from Application a
                 inner join Entry e on a.entryId = e.id
+                inner join Employee emp on a.employeeId = emp.employeeId
                 where e.companyId = :companyUserId
             """)
     List<ApplicationDto> getCompanyApplicationDto(String companyUserId);
@@ -40,11 +46,14 @@ public interface ApplicationRepository extends JpaRepository<Application, UUID> 
             select new com.kodizim.findaduck.domain.job.ApplicationDto(
                 a.applicationId,
                 e.title,
+                emp.name,
+                emp.surname,
                 a.appliedOn,
                 a.status
             )
                 from Entry e
                 left join Application a on e.id = a.entryId
+                inner join Employee emp on a.employeeId = emp.employeeId
                 where e.companyId = :companyUserId and e.id = :entryId
             """)
     List<ApplicationDto> getEntryApplications(UUID entryId, String companyUserId);

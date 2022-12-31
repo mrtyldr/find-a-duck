@@ -1,5 +1,6 @@
 package com.kodizim.findaduck.domain.company;
 
+import com.kodizim.findaduck.domain.UserInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -24,4 +25,12 @@ public interface CompanyRepository extends JpaRepository<Company, UUID> {
         where c.companyId = :companyId
 """)
     Optional<CompanyDto> getCompanyDto(String companyId);
+    @Query("""
+     select new com.kodizim.findaduck.domain.UserInfo(
+           c.companyId,
+           (case when c.companyName is not null then true else false end)
+           )
+           from Company c where c.companyId = :id
+""")
+    Optional<UserInfo>isOnboardingDone(String id);
 }

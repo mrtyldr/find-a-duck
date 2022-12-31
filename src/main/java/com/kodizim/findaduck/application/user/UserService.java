@@ -8,7 +8,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.kodizim.findaduck.api.user.UserController;
+import com.kodizim.findaduck.domain.UserInfo;
 import com.kodizim.findaduck.domain.UserType;
+import com.kodizim.findaduck.domain.company.CompanyRepository;
+import com.kodizim.findaduck.domain.employee.EmployeeRepository;
+import com.kodizim.findaduck.error.NotFoundException;
 import com.kodizim.findaduck.infrastructure.auth0.Auth0Properties;
 import com.kodizim.findaduck.infrastructure.auth0.ManagementApiWrapper;
 import com.kodizim.findaduck.domain.AddUserCommand;
@@ -27,6 +31,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Service
 @Slf4j
 public class UserService {
+    private final CompanyRepository companyRepository;
+    private final EmployeeRepository employeeRepository;
 
     private final ManagementApiWrapper apiWrapper;
 
@@ -38,7 +44,9 @@ public class UserService {
 
     private final RestTemplate restTemplate;
 
-    public UserService(AuthAPI api, Auth0Properties properties, EmployeeService employeeService, CompanyService companyService, RestTemplateBuilder restTemplateBuilder) {
+    public UserService(AuthAPI api, Auth0Properties properties, EmployeeService employeeService, CompanyService companyService, RestTemplateBuilder restTemplateBuilder,
+                       EmployeeRepository employeeRepository,
+                       CompanyRepository companyRepository) {
         this.properties = properties;
         var objectMapper = new ObjectMapper()
                 .registerModule(new JavaTimeModule())
@@ -52,6 +60,8 @@ public class UserService {
         this.apiWrapper = new ManagementApiWrapper(api
                 , properties.getManagementAudience()
                 , properties.getDomain());
+        this.employeeRepository = employeeRepository;
+        this.companyRepository = companyRepository;
     }
 
     @Transactional
@@ -73,6 +83,24 @@ public class UserService {
             throw new RuntimeException("exception occured");
         }
     }
+
+    public UserInfo getUserInfo(String id) {
+        if(employeeRepository.existsByEmployeeId(id)){
+            var employee =  employeeRepository.isOnboardingDone(id)
+                    .get();
+            employee.setUserType(UserType.EMPLOYEE);
+            return employee;
+        } else if (companyRepository.existsByCompanyId(id)) {
+            var company = companyRepository.isOnboardingDone(id)
+                    .get();
+            company.setUserType(UserType.COMPANY);
+            return company;
+        }else
+            throw new NotFoundException("user not found");
+
+
+    }
+
     @Data
     @AllArgsConstructor
     @NoArgsConstructor

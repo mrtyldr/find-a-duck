@@ -66,14 +66,16 @@ class EmployeeControllerTest extends BaseTestClass {
         mockMvc.perform(request)
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
-                        {
-                      "result":[
-                      {
-                      "applicationId": "%s",
-                      "entryTitle":"Looking for an IT guy",
-                      "status":"WAITING"
-                      }
-                      ]
+                        {"result":[
+                            {
+                            "applicationId":"%s",
+                            "entryTitle":"Looking for an IT guy",
+                            "employeeName":"murat",
+                            "employeeSurname":"yıldırım",
+                            "appliedOn":"2021-04-01T19:30:00+03:00",
+                            "status":"WAITING"
+                            }
+                            ]
                         }
                         """.formatted(application.getApplicationId())));
 

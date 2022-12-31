@@ -4,9 +4,12 @@ package com.kodizim.findaduck.api.user;
 import com.kodizim.findaduck.api.model.Response;
 import com.kodizim.findaduck.application.user.UserService;
 import com.kodizim.findaduck.domain.AddUserCommand;
+import com.kodizim.findaduck.domain.UserInfo;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 
 @RestController
@@ -36,6 +39,11 @@ public class UserController {
     @PostMapping("login")
     Response<UserToken> login(@RequestBody LoginCommand command){
         return Response.of(userService.login(command.getEmail(),command.getPassword()));
+    }
+
+    @GetMapping("user-info")
+    Response<UserInfo> getUser(Principal principal){
+        return Response.of(userService.getUserInfo(principal.getName()));
     }
 
 }
