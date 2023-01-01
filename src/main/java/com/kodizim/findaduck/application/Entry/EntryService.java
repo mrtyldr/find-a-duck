@@ -7,6 +7,7 @@ import com.kodizim.findaduck.domain.employee.ProfessionRepository;
 import com.kodizim.findaduck.domain.entry.*;
 import com.kodizim.findaduck.domain.job.Application;
 import com.kodizim.findaduck.domain.job.ApplicationRepository;
+import com.kodizim.findaduck.error.AlreadyExistsException;
 import com.kodizim.findaduck.error.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -72,6 +73,8 @@ public class EntryService {
     public void apply(UUID entryId, String userId){
         var employee = employeeRepository.findByEmployeeId(userId)
                 .orElseThrow(() -> new NotFoundException("employee not found"));
+        if(applicationRepository.existsByEntryIdAndEmployeeId(entryId,userId))
+            throw new AlreadyExistsException("You already Have Applied to this ad");
         var application = new Application(entryId,employee.getEmployeeId(),OffsetDateTime.now(clock));
         applicationRepository.save(application);
     }
