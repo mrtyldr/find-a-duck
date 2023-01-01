@@ -8,6 +8,7 @@ import com.kodizim.findaduck.error.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,21 +18,21 @@ public class JobService {
     private final JobRepository jobRepository;
     private final EntryRepository entryRepository;
 
-    public void rateEmployee(UUID jobId, Integer rate, String userId) {
+    public void rateEmployee(UUID jobId, String rate, String userId) {
         var job = jobRepository.findById(jobId)
                 .orElseThrow(() -> new NotFoundException("Job not found"));
         if(!entryRepository.existsByIdAndCompanyId(job.getEntryId(),userId))
             throw new NotFoundException("job not found");
-        job.rateEmployee(rate);
+        job.rateEmployee(new BigDecimal(rate));
         jobRepository.save(job);
     }
 
-    public void rateCompany(UUID jobId, Integer rate, String userId) {
+    public void rateCompany(UUID jobId, String rate, String userId) {
         var job = jobRepository.findById(jobId)
                 .orElseThrow(() -> new NotFoundException("Job not found"));
         if(!job.getEmployeeId().equals(userId))
             throw new NotFoundException("job not found");
-        job.rateCompany(rate);
+        job.rateCompany(new BigDecimal(rate));
 
         jobRepository.save(job);
     }

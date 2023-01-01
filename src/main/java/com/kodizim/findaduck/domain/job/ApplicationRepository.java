@@ -38,7 +38,7 @@ public interface ApplicationRepository extends JpaRepository<Application, UUID> 
                 from Application a
                 inner join Entry e on a.entryId = e.id
                 inner join Employee emp on a.employeeId = emp.employeeId
-                where e.companyId = :companyUserId
+                where e.companyId = :companyUserId and a.status = 'WAITING'
             """)
     List<ApplicationDto> getCompanyApplicationDto(String companyUserId);
 
@@ -55,6 +55,7 @@ public interface ApplicationRepository extends JpaRepository<Application, UUID> 
                 left join Application a on e.id = a.entryId
                 inner join Employee emp on a.employeeId = emp.employeeId
                 where e.companyId = :companyUserId and e.id = :entryId
+                and a.status = 'WAITING'
             """)
     List<ApplicationDto> getEntryApplications(UUID entryId, String companyUserId);
 
