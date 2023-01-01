@@ -39,7 +39,8 @@ public class JobService {
 
 
     public List<JobDto> getEmployeeJobs(String employeeId) {
-        return jobRepository.getJobDtoByEmployeeId(employeeId);
+        List<JobDto> jobDtoByEmployeeId = jobRepository.getJobDtoByEmployeeId(employeeId);
+        return jobDtoByEmployeeId;
     }
 
     public List<JobDto> getCompanyJobs(String companyId) {

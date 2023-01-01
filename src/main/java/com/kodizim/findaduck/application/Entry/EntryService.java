@@ -119,4 +119,12 @@ public class EntryService {
             entry.entryClosed();
         entryRepository.save(entry);
     }
+    @Transactional
+    public void deleteEntry(UUID entryId, String companyId) {
+        if(!entryRepository.existsByCompanyIdAndId(companyId,entryId))
+            throw new NotFoundException("Ad not found !");
+       var entry = entryRepository.findById(entryId)
+               .orElseThrow(()-> new NotFoundException("Entry Not Found!"));
+       entryRepository.delete(entry);
+    }
 }

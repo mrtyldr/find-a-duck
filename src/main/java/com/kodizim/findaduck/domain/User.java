@@ -20,6 +20,4 @@ public class User extends AbstractAggregateRoot<User> {
 
     @Enumerated(EnumType.STRING)
     private UserType userType;
-
-
 }
