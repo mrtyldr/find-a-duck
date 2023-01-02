@@ -50,7 +50,7 @@ public interface ApplicationRepository extends JpaRepository<Application, UUID>,
             """)
     List<ApplicationDto> getCompanyApplicationDto(String companyUserId);
 
-    @Query("""
+  /*  @Query("""
             select new com.kodizim.findaduck.domain.job.ApplicationDto(
                 a.applicationId,
                 e.title,
@@ -65,7 +65,7 @@ public interface ApplicationRepository extends JpaRepository<Application, UUID>,
                 where e.companyId = :companyUserId and e.id = :entryId
                 and a.status = 'WAITING'
             """)
-    List<ApplicationDto> getEntryApplications(UUID entryId, String companyUserId);
+    List<ApplicationDto> getEntryApplications(UUID entryId, String companyUserId);*/
 
     Optional<Application> findByEmployeeIdAndEntryId(String userId, UUID entryId);
 

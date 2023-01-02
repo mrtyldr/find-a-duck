@@ -34,6 +34,8 @@ public interface EntryRepository extends JpaRepository<Entry, UUID>, EntryQuerie
     @Modifying
     @Query(value = "call refresh_active_entries()", nativeQuery = true)
     void refreshActiveEntries();
+    @Query("select e.expectedProfessions from Entry e where e.id = :entryId")
+    List<String> getProfessions(UUID entryId);
 
     @RequiredArgsConstructor
     class EntryQueriesImpl implements EntryQueries {

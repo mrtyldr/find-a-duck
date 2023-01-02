@@ -9,6 +9,7 @@ import com.kodizim.findaduck.domain.company.CompanyDto;
 import com.kodizim.findaduck.domain.company.CompanyInitialSetupCommand;
 import com.kodizim.findaduck.domain.company.CompanyRepository;
 import com.kodizim.findaduck.domain.entry.Advertisement;
+import com.kodizim.findaduck.domain.entry.EntryRepository;
 import com.kodizim.findaduck.domain.job.ApplicationDto;
 import com.kodizim.findaduck.domain.job.ApplicationRepository;
 import com.kodizim.findaduck.domain.job.JobDto;
@@ -32,6 +33,7 @@ public class CompanyController {
     private final JobService jobService;
     private final ApplicationRepository applicationRepository;
     private final EntryService entryService;
+    private final EntryRepository entryRepository;
 
     @PostMapping("/initial-setup")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -68,7 +70,9 @@ public class CompanyController {
     }
     @GetMapping("/applications/{entryId}")
     Response<List<ApplicationDto>> getApplications(@PathVariable UUID entryId,Principal principal){
-        return Response.of(applicationRepository.getEntryApplications(entryId,principal.getName()));
+        var professions = entryRepository.getProfessions(entryId)
+                .toString();
+        return Response.of(applicationRepository.getEntryApplications(entryId,principal.getName(),professions));
     }
     @GetMapping("/advertisements")
     Response<List<Advertisement>> getAdvertisements(Principal principal){
