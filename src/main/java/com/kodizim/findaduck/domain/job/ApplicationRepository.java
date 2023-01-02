@@ -90,7 +90,7 @@ public interface ApplicationRepository extends JpaRepository<Application, UUID>,
                     inner join Employee emp on a.employee_id = emp.employee_id
                     where e.company_id = :companyUserId and e.id = :entryId
                     and a.status = 'WAITING'
-                    order by ts_rank(to_tsvector(array_to_string(e.expected_professions,' ')), plainto_tsquery(:professions)) desc
+                    order by ts_rank(to_tsvector(array_to_string(emp.professions,' ')), plainto_tsquery(:professions)) desc
                         """;
             var professions1 = (List<Tuple>) entityManager.createNativeQuery(sql, Tuple.class)
                     .setParameter("professions", professions)
