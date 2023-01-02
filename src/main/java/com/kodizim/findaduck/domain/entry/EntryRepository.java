@@ -1,7 +1,7 @@
 package com.kodizim.findaduck.domain.entry;
 
 
-import com.vladmihalcea.hibernate.type.array.UUIDArrayType;
+import com.vladmihalcea.hibernate.type.array.StringArrayType;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.type.OffsetDateTimeType;
@@ -99,7 +99,7 @@ public interface EntryRepository extends JpaRepository<Entry, UUID>, EntryQuerie
                     .addScalar("created_on", OffsetDateTimeType.INSTANCE)
                     .addScalar("job_start_date", OffsetDateTimeType.INSTANCE)
                     .addScalar("valid_til", OffsetDateTimeType.INSTANCE)
-                    .addScalar("expected_professions", UUIDArrayType.INSTANCE)
+                    .addScalar("expected_professions", StringArrayType.INSTANCE)
                     .getResultList();
 
             return tuple.stream().map(t -> {
