@@ -94,7 +94,8 @@ class EmployeeControllerTest extends BaseTestClass {
     void should_get_jobs() throws Exception {
         companyService.acceptApplication(application.getApplicationId(),"company");
 
-        assertThat(jobRepository.getJobDtosForCompany("company")).isNotEmpty();
+        var jobDto = jobRepository.getJobDtoByEmployeeId("employee")
+                .get(0);
 
         mockMvc.perform(get("/api/employee/jobs"))
                 .andExpect(status().isOk())
@@ -102,7 +103,7 @@ class EmployeeControllerTest extends BaseTestClass {
                         {
                         "result":[
                         {
-                       
+                        "jobId": "%s",
                         "companyName":"testCompany",
                         "employeeId":"employee",
                         
@@ -111,7 +112,7 @@ class EmployeeControllerTest extends BaseTestClass {
                         "rating":null}]
 
                         }
-                        """));
+                        """.formatted(jobDto.getJobId())));
     }
 
 }
