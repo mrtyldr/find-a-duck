@@ -49,7 +49,7 @@ public class EntryService {
                 command.validTil(),
                 OffsetDateTime.now(clock),
                 OffsetDateTime.now(clock),
-                professionRepository.findProfessionsByName(command.expectedProfessions())
+                command.expectedProfessions()
         );
         entryRepository.save(entry);
         entryRepository.refreshActiveEntries();
@@ -80,13 +80,15 @@ public class EntryService {
     }
 
     public List<Advertisement> getAdvertisements(String employeeId) {
-        var entryDtos = entryRepository.getEntryDto(employeeId);
+        String professions = employeeRepository.getProfessions(employeeId)
+                .toString();
+        var entryDtos = entryRepository.getEntryDto(employeeId,professions);
         return entryDtos.stream().map(e -> toAdvertisement(e,employeeId))
                 .collect(Collectors.toList());
     }
 
     private Advertisement toAdvertisement(EntryDto entryDto,String employeeId){
-        var professionNames = employeeRepository.getProfessionName((List<UUID>) entryDto.getExpectedProfessionIds());
+
         return new Advertisement(
                 entryDto.getEntryId(),
                 entryDto.getCompanyName(),
@@ -98,7 +100,7 @@ public class EntryService {
                 entryDto.getValidTil(),
                 entryDto.getCreatedOn(),
                 applicationRepository.existsByEntryIdAndEmployeeId(entryDto.getEntryId(),employeeId),
-                professionNames
+                entryDto.getExpectedProfessions()
         );
     }
 

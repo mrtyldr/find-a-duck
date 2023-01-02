@@ -64,7 +64,7 @@ public interface EntryRepository extends JpaRepository<Entry, UUID>, EntryQuerie
             return toEntryDto(query);
         }
 
-        public List<EntryDto> getEntryDto(String employeeId) {
+        public List<EntryDto> getEntryDto(String employeeId, String professions) {
             var sql = """
                     select
                     e.id,
@@ -81,9 +81,10 @@ public interface EntryRepository extends JpaRepository<Entry, UUID>, EntryQuerie
                     from active_entries e
                     inner join company c on e.company_id = c.company_id
                                
-                    order by e.created_on desc
+                    order by ts_rank(to_tsvector(array_to_string(expected_professions,' ')), plainto_tsquery(:professions)) desc
                     """;
-            return toEntryDto(entityManager.createNativeQuery(sql,Tuple.class));
+            return toEntryDto(entityManager.createNativeQuery(sql,Tuple.class)
+                    .setParameter("professions",professions));
 
         }
 

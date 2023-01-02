@@ -1,18 +1,15 @@
 package com.kodizim.findaduck.application;
 
-import com.kodizim.findaduck.BaseTestClass;
 import com.kodizim.findaduck.application.Entry.EntryService;
 import com.kodizim.findaduck.application.user.EmployeeService;
 import com.kodizim.findaduck.domain.company.Company;
 import com.kodizim.findaduck.domain.company.CompanyRepository;
 import com.kodizim.findaduck.domain.employee.*;
-import com.kodizim.findaduck.domain.entry.AddEntryCommand;
 import com.kodizim.findaduck.domain.entry.Category;
 import com.kodizim.findaduck.domain.entry.Entry;
 import com.kodizim.findaduck.domain.entry.EntryRepository;
 import com.kodizim.findaduck.domain.job.Application;
 import com.kodizim.findaduck.domain.job.ApplicationRepository;
-import com.kodizim.findaduck.domain.job.Job;
 import com.kodizim.findaduck.error.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -62,7 +59,7 @@ public class TestDataService {
                 OffsetDateTime.now(),
                 OffsetDateTime.now(),
                 OffsetDateTime.now(),
-                professionRepository.findProfessionsByName(List.of("IT","COMPUTER","JAVA"))
+                List.of("IT","COMPUTER","JAVA")
         );
         entryRepository.save(entry);
         return entry;
