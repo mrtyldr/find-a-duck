@@ -92,7 +92,10 @@ public interface ApplicationRepository extends JpaRepository<Application, UUID>,
                     and a.status = 'WAITING'
                     order by ts_rank(to_tsvector(array_to_string(e.expected_professions,' ')), plainto_tsquery(:professions)) desc
                         """;
-            var professions1 = (List<Tuple>) entityManager.createNativeQuery(sql, Tuple.class).setParameter("professions", professions)
+            var professions1 = (List<Tuple>) entityManager.createNativeQuery(sql, Tuple.class)
+                    .setParameter("professions", professions)
+                    .setParameter("companyUserId",companyUserId)
+                    .setParameter("entryId",entryId)
                     .unwrap(NativeQuery.class)
                     .addScalar("application_id", UUIDCharType.INSTANCE)
                     .addScalar("title")
