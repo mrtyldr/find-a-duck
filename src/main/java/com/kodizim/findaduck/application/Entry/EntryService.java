@@ -144,14 +144,14 @@ public class EntryService {
 
     public List<Advertisement> search(String searchString, String userId) {
         if(companyRepository.existsByCompanyId(userId)){
-                return entryRepository.entrySearchCompany(searchString,userId)
+            var searchQuery = searchString.replace(" ","|");
+                return entryRepository.entrySearchCompany(searchQuery,userId)
                         .stream().map(e -> toAdvertisement(e,userId))
                         .collect(Collectors.toList());
         } else if (employeeRepository.existsByEmployeeId(userId)) {
             var searchQuery = searchString.replace(" ","|");
-            List<Advertisement> collect = entryRepository.entrySearchEmployee(searchQuery)
+            return entryRepository.entrySearchEmployee(searchQuery)
                     .stream().map(e -> toAdvertisement(e, userId)).collect(Collectors.toList());
-            return collect;
         }
         else {
             throw new NotFoundException("user not found");
