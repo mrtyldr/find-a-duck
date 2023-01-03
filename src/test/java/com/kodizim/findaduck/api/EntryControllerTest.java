@@ -84,6 +84,7 @@ class EntryControllerTest extends BaseTestClass {
         assertThat(updatedEntry.getContent()).isEqualTo("content değişti");
         assertThat(updatedEntry.getTitle()).isEqualTo("title değişti");
     }
+
     @Test
     @WithMockUser(authorities = "STANDARD", value = "employee")
     void should_return_most_relevant_entries_ranked() throws Exception {
@@ -93,12 +94,9 @@ class EntryControllerTest extends BaseTestClass {
 
         //WHEN
         var request = mockMvc.perform(get("/api/entry/search")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("""
-                        {
-                        "searchString": "a barista needed for coffee"
-                        }
-                        """));
+                .param("query","barmen barista coffee"));
+
+
 
         //should get barista first
         request.andExpect(status().isOk())
@@ -126,15 +124,10 @@ class EntryControllerTest extends BaseTestClass {
                         }
                         ]
                         }
-                        """.formatted(barista.getId(),coffeeMaker.getId())));
+                        """.formatted(barista.getId(), coffeeMaker.getId())));
         //when
-        var request2 = mockMvc.perform(get("/api/entry/search")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("""
-                        {
-                        "searchString": "coffee maker barista"
-                        }
-                        """));
+        var request2 = mockMvc.perform(get("/api/entry/search").queryParam("query", "coffee maker barista"));
+
 
         //should get coffer maker first
         request2.andExpect(status().isOk())
@@ -163,7 +156,7 @@ class EntryControllerTest extends BaseTestClass {
                         }
                         ]
                         }
-                        """.formatted(coffeeMaker.getId(),barista.getId())));
+                        """.formatted(coffeeMaker.getId(), barista.getId())));
 
 
     }
