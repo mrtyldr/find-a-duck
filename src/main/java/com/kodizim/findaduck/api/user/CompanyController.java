@@ -8,6 +8,7 @@ import com.kodizim.findaduck.application.user.CompanyService;
 import com.kodizim.findaduck.domain.company.CompanyDto;
 import com.kodizim.findaduck.domain.company.CompanyInitialSetupCommand;
 import com.kodizim.findaduck.domain.company.CompanyRepository;
+import com.kodizim.findaduck.domain.company.UpdateCompanyCommand;
 import com.kodizim.findaduck.domain.entry.Advertisement;
 import com.kodizim.findaduck.domain.entry.EntryRepository;
 import com.kodizim.findaduck.domain.job.ApplicationDto;
@@ -81,6 +82,12 @@ public class CompanyController {
     @GetMapping("")
     Response<CompanyDto> getCompany(Principal principal){
         return Response.of(companyService.getCompanyDto(principal.getName()));
+    }
+
+    @PutMapping("/update")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void updateCompany(@RequestBody UpdateCompanyCommand command, Principal principal){
+        companyService.update(command,principal.getName());
     }
 
 }

@@ -1,10 +1,7 @@
 package com.kodizim.findaduck.application.user;
 
 import com.kodizim.findaduck.application.Entry.EntryService;
-import com.kodizim.findaduck.domain.company.Company;
-import com.kodizim.findaduck.domain.company.CompanyDto;
-import com.kodizim.findaduck.domain.company.CompanyInitialSetupCommand;
-import com.kodizim.findaduck.domain.company.CompanyRepository;
+import com.kodizim.findaduck.domain.company.*;
 import com.kodizim.findaduck.domain.entry.EntryRepository;
 import com.kodizim.findaduck.domain.job.ApplicationRepository;
 import com.kodizim.findaduck.error.NotFoundException;
@@ -13,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.UUID;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -75,4 +71,16 @@ public class CompanyService {
         return companyRepository.getCompanyDto(companyId)
                 .orElseThrow(() -> new NotFoundException("company not Found"));
     }
+
+    public void update(UpdateCompanyCommand command, String companyId) {
+        var company = companyRepository.findByCompanyId(companyId)
+                .orElseThrow(() -> new NotFoundException("company not found!"));
+
+        if(!company.getCompanyId().equals(companyId))
+            throw new NotFoundException("company not found!");
+
+        company.update(command);
+        companyRepository.save(company);
+    }
+
 }

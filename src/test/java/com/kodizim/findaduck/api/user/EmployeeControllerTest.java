@@ -113,9 +113,8 @@ class EmployeeControllerTest extends BaseTestClass {
                         }
                         """.formatted(jobDto.getJobId())));
     }
-
-    @WithMockUser(authorities = "STANDARD", value = "employee1")
     @Test
+    @WithMockUser(authorities = "STANDARD", value = "employee1")
     void should_update_employee() throws Exception {
         testDataService.addEmployee("employee1");
         var request = put("/api/employee/update")
@@ -135,7 +134,6 @@ class EmployeeControllerTest extends BaseTestClass {
         assertThat(employee.getAbout()).isEqualTo("about has changed");
         assertThat(employee.getBirthDate()).isEqualTo("2005-06-28");
         assertThat(employee.getPhotoLocationKey()).isEqualTo("somepublicUrl.com");
-
     }
 
 }
