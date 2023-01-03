@@ -13,8 +13,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -113,6 +112,30 @@ class EmployeeControllerTest extends BaseTestClass {
 
                         }
                         """.formatted(jobDto.getJobId())));
+    }
+
+    @WithMockUser(authorities = "STANDARD", value = "employee1")
+    @Test
+    void should_update_employee() throws Exception {
+        testDataService.addEmployee("employee1");
+        var request = put("/api/employee/update")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                        {
+                        "phoneNumber" : "5116956",
+                        "photoLocationKey": "somepublicUrl.com",
+                        "birthDate": "2005-06-28",
+                        "about": "about has changed",
+                        "professions": ["changed profession 1","changed profession 2"]
+                        }
+                        """);
+        mockMvc.perform(request)
+                .andExpect(status().isNoContent());
+        var employee = employeeRepository.findByEmployeeId("employee1").orElseThrow();
+        assertThat(employee.getAbout()).isEqualTo("about has changed");
+        assertThat(employee.getBirthDate()).isEqualTo("2005-06-28");
+        assertThat(employee.getPhotoLocationKey()).isEqualTo("somepublicUrl.com");
+
     }
 
 }

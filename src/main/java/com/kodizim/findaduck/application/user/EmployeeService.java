@@ -57,4 +57,14 @@ public class EmployeeService {
     public List<ApplicationDto> getApplications(String userId) {
         return applicationRepository.getApplicationDto(userId);
     }
+
+    public void update(UpdateEmployeeCommand command, String employeeId) {
+        var employee = employeeRepository.findByEmployeeId(employeeId)
+                .orElseThrow(() -> new NotFoundException("Employee not found!"));
+        if(!employee.getEmployeeId().equals(employeeId))
+            throw new NotFoundException("Employee not found!");
+        employee.update(command);
+        employeeRepository.save(employee);
+
+    }
 }

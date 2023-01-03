@@ -64,4 +64,12 @@ public class Employee extends AbstractAggregateRoot<Employee> {
         this.about = about;
         this.professions = professions;
     }
+
+    public void update(UpdateEmployeeCommand command) {
+        this.phoneNumber = command.phoneNumber();
+        this.photoLocationKey = command.photoLocationKey();
+        this.birthDate = command.birthDate();
+        this.about = command.about();
+        this.professions = command.professions();
+    }
 }

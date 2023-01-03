@@ -102,7 +102,20 @@ public class TestDataService {
 
     }
 
+    public Employee addEmployee(String userId){
+        employeeService.addEmployeeUser(userId, userId + "@mail.com");
+        employeeService.employeeInitialSetup(new EmployeeInitialSetupCommand(
+                "murat",
+                "yıldırım",
+                "123123",
+                "/ev",
+                LocalDate.of(1999,3,24),
+                "selam ben murat",
+                List.of("spring","java","sql")
+        ),userId);
+        return employeeRepository.findByEmployeeId(userId).orElseThrow();
 
+    }
 
 
 }
