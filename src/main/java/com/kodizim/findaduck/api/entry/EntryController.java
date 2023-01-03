@@ -5,7 +5,6 @@ import com.kodizim.findaduck.api.model.Response;
 import com.kodizim.findaduck.application.Entry.EntryService;
 import com.kodizim.findaduck.domain.entry.AddEntryCommand;
 import com.kodizim.findaduck.domain.entry.Advertisement;
-import com.kodizim.findaduck.domain.entry.EntrySearchCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -21,27 +20,29 @@ import java.util.UUID;
 public class EntryController {
 
 
-   private final EntryService entryService;
+    private final EntryService entryService;
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void addEntry(@RequestBody AddEntryCommand command, Principal principal){
-       entryService.addEntry(command,principal.getName());
+    public void addEntry(@RequestBody AddEntryCommand command, Principal principal) {
+        entryService.addEntry(command, principal.getName());
     }
+
     @DeleteMapping("/{entryId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteEntry(@PathVariable UUID entryId, Principal principal){
-        entryService.deleteEntry(entryId,principal.getName());
+    void deleteEntry(@PathVariable UUID entryId, Principal principal) {
+        entryService.deleteEntry(entryId, principal.getName());
     }
+
     @PutMapping("/{entryId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void updateEntry(@PathVariable UUID entryId,@RequestBody AddEntryCommand command,Principal principal){
-        entryService.updateEntry(entryId,command,principal.getName());
+    void updateEntry(@PathVariable UUID entryId, @RequestBody AddEntryCommand command, Principal principal) {
+        entryService.updateEntry(entryId, command, principal.getName());
     }
 
     @GetMapping("/search")
-    Response<List<Advertisement>> entrySearch(@RequestBody EntrySearchCommand command, Principal principal){
-        return Response.of(entryService.search(command.searchString(),principal.getName()));
+    Response<List<Advertisement>> entrySearch(@RequestParam String query, Principal principal) {
+        return Response.of(entryService.search(query, principal.getName()));
     }
 
 }
