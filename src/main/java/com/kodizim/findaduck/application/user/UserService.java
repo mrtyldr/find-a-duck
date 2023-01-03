@@ -101,6 +101,16 @@ public class UserService {
 
     }
 
+    public void updatePassword(String newPassword,String userId) {
+        try {
+            var user = apiWrapper.call(a -> a.users().get(userId,null).execute());
+            user.setPassword(newPassword.toCharArray());
+            apiWrapper.call(a -> a.users().update(userId,user));
+        }catch (Exception e) {
+            log.error(e.getMessage());
+        }
+    }
+
     @Data
     @AllArgsConstructor
     @NoArgsConstructor

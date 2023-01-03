@@ -1,4 +1,8 @@
 drop materialized view if exists active_entries;
+alter table entry alter column expected_professions type text[];
+delete from entry where expected_professions is null;
+
+drop materialized view if exists active_entries;
 create materialized view active_entries
 as
 select e.*

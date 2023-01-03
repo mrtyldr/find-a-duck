@@ -17,7 +17,7 @@ public class EntryDto {
     OffsetDateTime createdOn;
     OffsetDateTime jobStartDate;
     OffsetDateTime validTil;
-    List<UUID> expectedProfessionIds;
+    List<String> expectedProfessions;
 
     public EntryDto(UUID entryId, String companyName, String title, String content, Category category, BigDecimal hourlyPay, OffsetDateTime createdOn, OffsetDateTime jobStartDate, OffsetDateTime validTil, Object expectedProfessionIds) {
         this.entryId = entryId;
@@ -29,6 +29,6 @@ public class EntryDto {
         this.createdOn = createdOn;
         this.jobStartDate = jobStartDate;
         this.validTil = validTil;
-        this.expectedProfessionIds = (List<UUID>) expectedProfessionIds;
+        this.expectedProfessions = (List<String>) expectedProfessionIds;
     }
 }

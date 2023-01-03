@@ -42,6 +42,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, UUID>, Emplo
     Optional<UserInfo> isOnboardingDone(String id);
 
     boolean existsByEmployeeId(String id);
+    @Query("select e.professions from Employee e where e.employeeId = :employeeId")
+    List<String> getProfessions(String employeeId);
 
     @Component
     @RequiredArgsConstructor

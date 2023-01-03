@@ -7,6 +7,7 @@ import com.kodizim.findaduck.application.Entry.JobService;
 import com.kodizim.findaduck.application.user.EmployeeService;
 import com.kodizim.findaduck.domain.employee.EmployeeDto;
 import com.kodizim.findaduck.domain.employee.EmployeeInitialSetupCommand;
+import com.kodizim.findaduck.domain.employee.UpdateEmployeeCommand;
 import com.kodizim.findaduck.domain.entry.Advertisement;
 import com.kodizim.findaduck.domain.job.ApplicationDto;
 import com.kodizim.findaduck.domain.job.JobDto;
@@ -65,6 +66,11 @@ public class EmployeeController {
     @GetMapping("/advertisements")
     Response<List<Advertisement>> getAdvertisements(Principal principal){
         return Response.of(entryService.getAdvertisements(principal.getName()));
+    }
+    @PutMapping("/update")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void updateEmployee(@RequestBody UpdateEmployeeCommand command, Principal principal){
+        employeeService.update(command,principal.getName());
     }
 
 }

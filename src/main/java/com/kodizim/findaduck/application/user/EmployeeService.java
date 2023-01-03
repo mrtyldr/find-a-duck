@@ -23,7 +23,6 @@ public class EmployeeService {
         var employee = employeeRepository.findByEmployeeId(userId)
                 .orElseThrow(() -> new NotFoundException("employee not found"));
         addMissingProfessions(command.professions());
-        var professions = professionRepository.findProfessionsByName(command.professions());
         employee.employeeInitial(
                 command.name(),
                 command.surname(),
@@ -31,7 +30,7 @@ public class EmployeeService {
                 command.photoLocationKey(),
                 command.birthDate(),
                 command.about(),
-                professions
+                command.professions()
         );
         employeeRepository.save(employee);
     }
@@ -46,11 +45,8 @@ public class EmployeeService {
 
     public EmployeeDto getEmployeeDto(String userId) {
 
-        var employeeDto = employeeRepository.getEmployeeDto(userId)
+        return employeeRepository.getEmployeeDto(userId)
                 .orElseThrow(() -> new NotFoundException("user not found!"));
-        var professions = employeeRepository.getProfessionName(employeeDto.getProfessionIds());
-        employeeDto.setProfessions(professions);
-        return employeeDto;
     }
 
     public void addEmployeeUser(String userId, String email) {
@@ -60,5 +56,15 @@ public class EmployeeService {
 
     public List<ApplicationDto> getApplications(String userId) {
         return applicationRepository.getApplicationDto(userId);
+    }
+
+    public void update(UpdateEmployeeCommand command, String employeeId) {
+        var employee = employeeRepository.findByEmployeeId(employeeId)
+                .orElseThrow(() -> new NotFoundException("Employee not found!"));
+        if(!employee.getEmployeeId().equals(employeeId))
+            throw new NotFoundException("Employee not found!");
+        employee.update(command);
+        employeeRepository.save(employee);
+
     }
 }

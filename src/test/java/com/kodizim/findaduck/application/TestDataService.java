@@ -1,18 +1,17 @@
 package com.kodizim.findaduck.application;
 
-import com.kodizim.findaduck.BaseTestClass;
 import com.kodizim.findaduck.application.Entry.EntryService;
+import com.kodizim.findaduck.application.user.CompanyService;
 import com.kodizim.findaduck.application.user.EmployeeService;
 import com.kodizim.findaduck.domain.company.Company;
+import com.kodizim.findaduck.domain.company.CompanyInitialSetupCommand;
 import com.kodizim.findaduck.domain.company.CompanyRepository;
 import com.kodizim.findaduck.domain.employee.*;
-import com.kodizim.findaduck.domain.entry.AddEntryCommand;
 import com.kodizim.findaduck.domain.entry.Category;
 import com.kodizim.findaduck.domain.entry.Entry;
 import com.kodizim.findaduck.domain.entry.EntryRepository;
 import com.kodizim.findaduck.domain.job.Application;
 import com.kodizim.findaduck.domain.job.ApplicationRepository;
-import com.kodizim.findaduck.domain.job.Job;
 import com.kodizim.findaduck.error.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,18 +38,38 @@ public class TestDataService {
     private final ProfessionRepository professionRepository;
     private final EmployeeRepository employeeRepository;
     private final EmployeeService employeeService;
+    private final CompanyService companyService;
 
-    public Application addApplication(Entry entry){
-        entryService.apply(entry.getId(),"employee");
-        return applicationRepository.findByEmployeeIdAndEntryId("employee",entry.getId()).orElseThrow();
+    public Application addApplication(Entry entry) {
+        entryService.apply(entry.getId(), "employee");
+        return applicationRepository.findByEmployeeIdAndEntryId("employee", entry.getId()).orElseThrow();
     }
 
+
+    public Company addCompany() {
+        companyService.addCompanyUser("company", "company@company.com");
+        companyService.companyInitialSetup(new CompanyInitialSetupCommand(
+                "testCompany",
+                "1231231231",
+                "we are hiring for test",
+                "/home",
+                "someStreet",
+                null,
+                null,
+                null
+
+        ), "company");
+
+
+        return companyRepository.findByCompanyId("company").orElseThrow();
+
+    }
 
     public Entry addEntry() {
         String userId = "company";
         var user = companyRepository.findByCompanyId(userId)
                 .orElseThrow(() -> new NotFoundException("Company not found!"));
-       addMissingProfessions(List.of("IT","COMPUTER","JAVA"));
+        addMissingProfessions(List.of("IT", "COMPUTER", "JAVA"));
         var entry = new Entry(
                 UUID.randomUUID(),
                 Category.IT,
@@ -62,26 +81,12 @@ public class TestDataService {
                 OffsetDateTime.now(),
                 OffsetDateTime.now(),
                 OffsetDateTime.now(),
-                professionRepository.findProfessionsByName(List.of("IT","COMPUTER","JAVA"))
+                List.of("IT", "COMPUTER", "JAVA")
         );
         entryRepository.save(entry);
         return entry;
     }
 
-    public Company addCompany() {
-        var company = new Company(
-                "company",
-                "testCompany",
-                "1231231231",
-                "company@company.com",
-                "we are hiring for test",
-                "/home",
-                null,null,null,null
-        );
-        companyRepository.save(company);
-        return company;
-
-    }
     private void addMissingProfessions(List<String> professions) {
         professions.stream()
                 .filter(p -> !professionRepository.existsByProfessionName(p))
@@ -89,23 +94,51 @@ public class TestDataService {
                         new Profession(UUID.randomUUID(), p)
                 ));
     }
-   public Employee addEmployee(){
 
-
+    public Employee addEmployee() {
         employeeService.employeeInitialSetup(new EmployeeInitialSetupCommand(
                 "murat",
                 "yıldırım",
                 "123123",
                 "/ev",
-                LocalDate.of(1999,3,24),
+                LocalDate.of(1999, 3, 24),
                 "selam ben murat",
-                List.of("spring","java","sql")
-        ),"employee");
-       return employeeRepository.findByEmployeeId("employee").orElseThrow();
+                List.of("spring", "java", "sql")
+        ), "employee");
+        return employeeRepository.findByEmployeeId("employee").orElseThrow();
 
     }
 
+    public Employee addEmployee(String userId) {
+        employeeService.addEmployeeUser(userId, userId + "@mail.com");
+        employeeService.employeeInitialSetup(new EmployeeInitialSetupCommand(
+                "murat",
+                "yıldırım",
+                "123123",
+                "/ev",
+                LocalDate.of(1999, 3, 24),
+                "selam ben murat",
+                List.of("spring", "java", "sql")
+        ), userId);
+        return employeeRepository.findByEmployeeId(userId).orElseThrow();
 
+    }
 
+    public Company addCompany(String companyId) {
+        companyService.addCompanyUser(companyId, companyId + "@mail.com");
+        companyService.companyInitialSetup(new CompanyInitialSetupCommand(
+                "company1",
+                "1232114221",
+                "we are hiring for test",
+                "google/pics",
+                "someStreet",
+                "someCity",
+                "someCountry",
+                "78650"
+
+        ), companyId);
+        return companyRepository.findByCompanyId(companyId).orElseThrow();
+
+    }
 
 }

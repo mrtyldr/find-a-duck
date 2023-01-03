@@ -7,6 +7,7 @@ import com.kodizim.findaduck.domain.employee.ProfessionRepository;
 import com.kodizim.findaduck.domain.entry.*;
 import com.kodizim.findaduck.domain.job.Application;
 import com.kodizim.findaduck.domain.job.ApplicationRepository;
+import com.kodizim.findaduck.error.AlreadyExistsException;
 import com.kodizim.findaduck.error.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -48,7 +49,7 @@ public class EntryService {
                 command.validTil(),
                 OffsetDateTime.now(clock),
                 OffsetDateTime.now(clock),
-                professionRepository.findProfessionsByName(command.expectedProfessions())
+                command.expectedProfessions()
         );
         entryRepository.save(entry);
         entryRepository.refreshActiveEntries();
@@ -72,18 +73,22 @@ public class EntryService {
     public void apply(UUID entryId, String userId){
         var employee = employeeRepository.findByEmployeeId(userId)
                 .orElseThrow(() -> new NotFoundException("employee not found"));
+        if(applicationRepository.existsByEntryIdAndEmployeeId(entryId,userId))
+            throw new AlreadyExistsException("You already Have Applied to this ad");
         var application = new Application(entryId,employee.getEmployeeId(),OffsetDateTime.now(clock));
         applicationRepository.save(application);
     }
 
     public List<Advertisement> getAdvertisements(String employeeId) {
-        var entryDtos = entryRepository.getEntryDto(employeeId);
+        String professions = employeeRepository.getProfessions(employeeId)
+                .toString();
+        var entryDtos = entryRepository.getEntryDto(employeeId,professions);
         return entryDtos.stream().map(e -> toAdvertisement(e,employeeId))
                 .collect(Collectors.toList());
     }
 
     private Advertisement toAdvertisement(EntryDto entryDto,String employeeId){
-        var professionNames = employeeRepository.getProfessionName((List<UUID>) entryDto.getExpectedProfessionIds());
+
         return new Advertisement(
                 entryDto.getEntryId(),
                 entryDto.getCompanyName(),
@@ -95,7 +100,7 @@ public class EntryService {
                 entryDto.getValidTil(),
                 entryDto.getCreatedOn(),
                 applicationRepository.existsByEntryIdAndEmployeeId(entryDto.getEntryId(),employeeId),
-                professionNames
+                entryDto.getExpectedProfessions()
         );
     }
 
@@ -115,5 +120,22 @@ public class EntryService {
         if(entry.getValidTil().isAfter(OffsetDateTime.now(clock)))
             entry.entryClosed();
         entryRepository.save(entry);
+    }
+    @Transactional
+    public void deleteEntry(UUID entryId, String companyId) {
+        if(!entryRepository.existsByCompanyIdAndId(companyId,entryId))
+            throw new NotFoundException("Ad not found !");
+       var entry = entryRepository.findById(entryId)
+               .orElseThrow(()-> new NotFoundException("Entry Not Found!"));
+       entryRepository.delete(entry);
+    }
+    @Transactional
+    public void updateEntry(UUID entryId, AddEntryCommand command, String companyId) {
+        var entry = entryRepository.findById(entryId)
+                .orElseThrow(() -> new NotFoundException("Entry Not Found!"));
+        if(!entry.getCompanyId().equals(companyId))
+            throw new NotFoundException("Entry Not Found");
+        entry.update(command);
+        entryRepository.saveAndFlush(entry);
     }
 }

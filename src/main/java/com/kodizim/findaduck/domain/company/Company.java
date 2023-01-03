@@ -56,4 +56,11 @@ public class Company extends AbstractAggregateRoot<Company> {
         this.country = country;
         this.postalCode = postalCode;
     }
+
+    public void update(UpdateCompanyCommand command) {
+        this.companyName = command.companyName();
+        this.phoneNumber = command.phoneNumber();
+        this.about = command.about();
+        this.photoLocationKey = command.photoLocationKey();
+    }
 }

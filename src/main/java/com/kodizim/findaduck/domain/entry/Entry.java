@@ -44,8 +44,8 @@ public class Entry extends AbstractAggregateRoot<Entry> {
     private EntryStatus status;
 
     @Type(type = "list-array")
-    @Column(columnDefinition = "uuid[]")
-    private List<UUID> expectedProfessions = new ArrayList<>();
+    @Column(columnDefinition = "string[]")
+    private List<String> expectedProfessions = new ArrayList<>();
 
     public Entry(UUID id,
                  Category category,
@@ -57,7 +57,7 @@ public class Entry extends AbstractAggregateRoot<Entry> {
                  OffsetDateTime validTil,
                  OffsetDateTime createdOn,
                  OffsetDateTime modifiedOn,
-                 List<UUID> expectedProfessions) {
+                 List<String> expectedProfessions) {
         this.id = id;
         this.category = category;
         this.companyId = companyId;
@@ -74,5 +74,15 @@ public class Entry extends AbstractAggregateRoot<Entry> {
 
     public void entryClosed(){
         this.status = EntryStatus.CLOSED;
+    }
+
+    public void update(AddEntryCommand command) {
+        this.category = command.category();
+        this.title = command.title();
+        this.content = command.content();
+        this.hourlyPay = command.hourlyPay();
+        this.jobStartDate = command.jobStartDate();
+        this.validTil = command.validTil();
+        this.expectedProfessions = command.expectedProfessions();
     }
 }

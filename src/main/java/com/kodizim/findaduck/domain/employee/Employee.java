@@ -13,7 +13,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.UUID;
 import java.util.List;
 
 
@@ -42,8 +41,8 @@ public class Employee extends AbstractAggregateRoot<Employee> {
     private String about;
 
     @Type(type = "list-array")
-    @Column(name = "professions",columnDefinition = "uuid[]")
-    private List<UUID> professions = new ArrayList<>();
+    @Column(name = "professions",columnDefinition = "String[]")
+    private List<String> professions = new ArrayList<>();
 
     public Employee(String employeeId, String email) {
         this.employeeId = employeeId;
@@ -56,7 +55,7 @@ public class Employee extends AbstractAggregateRoot<Employee> {
                     String photoLocationKey,
                     LocalDate birthDate,
                     String about,
-                    List<UUID> professions) {
+                    List<String> professions) {
         this.name = name;
         this.surname = surname;
         this.phoneNumber = phoneNumber;
@@ -64,5 +63,13 @@ public class Employee extends AbstractAggregateRoot<Employee> {
         this.birthDate = birthDate;
         this.about = about;
         this.professions = professions;
+    }
+
+    public void update(UpdateEmployeeCommand command) {
+        this.phoneNumber = command.phoneNumber();
+        this.photoLocationKey = command.photoLocationKey();
+        this.birthDate = command.birthDate();
+        this.about = command.about();
+        this.professions = command.professions();
     }
 }

@@ -22,7 +22,7 @@ public interface JobRepository extends JpaRepository<Job, UUID> {
             )
             from Job j
                 inner join Entry e on j.entryId = e.id
-                inner join Company c on e.companyId = c.companyName
+                inner join Company c on e.companyId = c.companyId
                 where j.employeeId = :employeeId
             """)
     List<JobDto> getJobDtoByEmployeeId(String employeeId);
