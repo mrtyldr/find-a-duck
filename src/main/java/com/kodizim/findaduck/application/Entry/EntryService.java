@@ -128,6 +128,7 @@ public class EntryService {
        var entry = entryRepository.findById(entryId)
                .orElseThrow(()-> new NotFoundException("Entry Not Found!"));
        entryRepository.delete(entry);
+       entryRepository.refreshActiveEntries();
     }
     @Transactional
     public void updateEntry(UUID entryId, AddEntryCommand command, String companyId) {
@@ -136,6 +137,8 @@ public class EntryService {
         if(!entry.getCompanyId().equals(companyId))
             throw new NotFoundException("Entry Not Found");
         entry.update(command);
-        entryRepository.saveAndFlush(entry);
+
+        entryRepository.save(entry);
+        entryRepository.refreshActiveEntries();
     }
 }
