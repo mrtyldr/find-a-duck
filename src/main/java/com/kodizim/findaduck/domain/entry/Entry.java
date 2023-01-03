@@ -75,4 +75,14 @@ public class Entry extends AbstractAggregateRoot<Entry> {
     public void entryClosed(){
         this.status = EntryStatus.CLOSED;
     }
+
+    public void update(AddEntryCommand command) {
+        this.category = command.category();
+        this.title = command.title();
+        this.content = command.content();
+        this.hourlyPay = command.hourlyPay();
+        this.jobStartDate = command.jobStartDate();
+        this.validTil = command.validTil();
+        this.expectedProfessions = command.expectedProfessions();
+    }
 }

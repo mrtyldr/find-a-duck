@@ -29,5 +29,10 @@ public class EntryController {
     void deleteEntry(@PathVariable UUID entryId, Principal principal){
         entryService.deleteEntry(entryId,principal.getName());
     }
+    @PutMapping("/{entryId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void updateEntry(@PathVariable UUID entryId,@RequestBody AddEntryCommand command,Principal principal){
+        entryService.updateEntry(entryId,command,principal.getName());
+    }
 
 }

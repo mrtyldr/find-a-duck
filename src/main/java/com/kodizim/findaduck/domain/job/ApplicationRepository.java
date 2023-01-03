@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public interface ApplicationRepository extends JpaRepository<Application, UUID>, ApplicationQueries {
-    Optional<Application> findByEmployeeId(String employeeId);
+
 
     @Query("""
             select new com.kodizim.findaduck.domain.job.ApplicationDto(

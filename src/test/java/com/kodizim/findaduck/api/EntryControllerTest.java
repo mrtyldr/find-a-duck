@@ -1,12 +1,9 @@
 package com.kodizim.findaduck.api;
 
 import com.kodizim.findaduck.BaseTestClass;
-
 import com.kodizim.findaduck.application.TestDataService;
 import com.kodizim.findaduck.domain.company.CompanyRepository;
 import com.kodizim.findaduck.domain.entry.EntryRepository;
-
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
@@ -20,11 +17,8 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @EnableSpringDataWebSupport
@@ -44,7 +38,7 @@ class EntryControllerTest extends BaseTestClass {
 
 
     @Test
-    @WithMockUser(authorities = "STANDARD",value="company")
+    @WithMockUser(authorities = "STANDARD", value = "company")
     void should_add_Entry() throws Exception {
         var validTil = OffsetDateTime.of(LocalDateTime.of(2022, 12, 25, 17, 0), ZoneOffset.of("+3"));
 
@@ -62,9 +56,34 @@ class EntryControllerTest extends BaseTestClass {
                                                     }
                         """.formatted(validTil));
         mockMvc.perform(request).andExpect(status().isNoContent());
-         assertThat(JdbcTestUtils.countRowsInTable(jdbcTemplate,"entry")).isGreaterThan(0);
+        assertThat(JdbcTestUtils.countRowsInTable(jdbcTemplate, "entry")).isGreaterThan(0);
     }
+    @Test
+    @WithMockUser(authorities = "STANDARD", value = "company")
+    void should_update_entry() throws Exception {
+        var request = put("/api/entry/{entryId}",entry.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                        {
+                            "category": "IT",
+                            "title": "title değişti",
+                            "content": "content değişti",
+                            "hourlyPay": "40",
+                            "expectedProfessions" : ["bu da Değişti"],
+                            "validTil": "%s",
+                            "jobStartDate" : "%s"
+                        }
+                        """.formatted(OffsetDateTime.now(),OffsetDateTime.now()));
 
+        mockMvc.perform(request)
+                .andExpect(status().isNoContent());
+        var updatedEntry = entryRepository.findById(entry.getId())
+                .orElseThrow();
+        assertThat(updatedEntry.getContent()).isEqualTo("content değişti");
+        assertThat(updatedEntry.getTitle()).isEqualTo("title değişti");
+
+
+    }
 
 
 }
