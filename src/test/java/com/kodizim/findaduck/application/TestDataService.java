@@ -84,8 +84,80 @@ public class TestDataService {
                 List.of("IT", "COMPUTER", "JAVA")
         );
         entryRepository.save(entry);
+        entryRepository.refreshActiveEntries();
+        entryRepository.refreshEntrySearch();
         return entry;
     }
+    public Entry addEntryDeveloper() {
+        String userId = "company";
+        var user = companyRepository.findByCompanyId(userId)
+                .orElseThrow(() -> new NotFoundException("Company not found!"));
+        addMissingProfessions(List.of("IT", "COMPUTER", "C#"));
+        var entry = new Entry(
+                UUID.randomUUID(),
+                Category.IT,
+                user.getCompanyId(),
+                "Looking for a C# web developer",
+                "C#per",
+                new BigDecimal("12"),
+                OffsetDateTime.now(),
+                OffsetDateTime.now(),
+                OffsetDateTime.now(),
+                OffsetDateTime.now(),
+                List.of("IT", "COMPUTER", "C#")
+        );
+        entryRepository.save(entry);
+        entryRepository.refreshActiveEntries();
+        entryRepository.refreshEntrySearch();
+        return entry;
+    }
+    public Entry addEntryBarista() {
+        String userId = "company";
+        var user = companyRepository.findByCompanyId(userId)
+                .orElseThrow(() -> new NotFoundException("Company not found!"));
+        addMissingProfessions(List.of("COFFEE", "TEA", "BARISTA"));
+        var entry = new Entry(
+                UUID.randomUUID(),
+                Category.IT,
+                user.getCompanyId(),
+                "We need a Barista guy",
+                "A need for barista guy",
+                new BigDecimal("12"),
+                OffsetDateTime.now(),
+                OffsetDateTime.now(),
+                OffsetDateTime.now(),
+                OffsetDateTime.now(),
+                List.of("COFFEE", "TEA", "BARISTA")
+        );
+        entryRepository.save(entry);
+        entryRepository.refreshActiveEntries();
+        entryRepository.refreshEntrySearch();
+        return entry;
+    }
+    public Entry addEntryAnotherBarista() {
+        String userId = "company";
+        var user = companyRepository.findByCompanyId(userId)
+                .orElseThrow(() -> new NotFoundException("Company not found!"));
+        addMissingProfessions(List.of("COFFEE", "TEA", "BARISTA"));
+        var entry = new Entry(
+                UUID.randomUUID(),
+                Category.IT,
+                user.getCompanyId(),
+                "We need a guy to make us some coffee",
+                "A need for coffee maker guy",
+                new BigDecimal("12"),
+                OffsetDateTime.now(),
+                OffsetDateTime.now(),
+                OffsetDateTime.now(),
+                OffsetDateTime.now(),
+                List.of("COFFEE", "TEA", "BARISTA")
+        );
+        entryRepository.save(entry);
+        entryRepository.refreshActiveEntries();
+        entryRepository.refreshEntrySearch();
+        return entry;
+    }
+
 
     private void addMissingProfessions(List<String> professions) {
         professions.stream()

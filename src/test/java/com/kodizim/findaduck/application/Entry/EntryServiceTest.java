@@ -4,12 +4,12 @@ import com.kodizim.findaduck.domain.employee.EmployeeRepository;
 import com.kodizim.findaduck.domain.entry.Category;
 import com.kodizim.findaduck.domain.entry.EntryDto;
 import com.kodizim.findaduck.domain.entry.EntryRepository;
+import com.kodizim.findaduck.domain.job.ApplicationRepository;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -17,21 +17,27 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-@SpringBootTest
-@ActiveProfiles("test")
+
+@ExtendWith(MockitoExtension.class)
 class EntryServiceTest{
 
-    @Autowired
-    EntryService entryService;
-    @MockBean
-    EntryRepository entryRepository;
-    @MockBean
-    EmployeeRepository employeeRepository;
 
+
+    @Mock
+    EntryRepository entryRepository;
+    @Mock
+    EmployeeRepository employeeRepository;
+    @Mock
+    ApplicationRepository applicationRepository;
 
 
     @Test
     void should_get_advertisements() {
+        EntryService entryService = new EntryService(
+                entryRepository,
+                null,null,employeeRepository,
+                applicationRepository,null
+        );
         EntryDto entryDto = new EntryDto(
                 UUID.randomUUID(),
                 "company",
