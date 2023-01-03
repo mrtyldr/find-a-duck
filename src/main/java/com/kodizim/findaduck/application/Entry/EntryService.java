@@ -141,4 +141,20 @@ public class EntryService {
         entryRepository.save(entry);
         entryRepository.refreshActiveEntries();
     }
+
+    public List<Advertisement> search(String searchString, String userId) {
+        if(companyRepository.existsByCompanyId(userId)){
+                return entryRepository.entrySearchCompany(searchString,userId)
+                        .stream().map(e -> toAdvertisement(e,userId))
+                        .collect(Collectors.toList());
+        } else if (employeeRepository.existsByEmployeeId(userId)) {
+            var searchQuery = searchString.replace(" ","|");
+            List<Advertisement> collect = entryRepository.entrySearchEmployee(searchQuery)
+                    .stream().map(e -> toAdvertisement(e, userId)).collect(Collectors.toList());
+            return collect;
+        }
+        else {
+            throw new NotFoundException("user not found");
+        }
+    }
 }

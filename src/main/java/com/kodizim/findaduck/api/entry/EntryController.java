@@ -1,13 +1,16 @@
 package com.kodizim.findaduck.api.entry;
 
 
+import com.kodizim.findaduck.api.model.Response;
 import com.kodizim.findaduck.application.Entry.EntryService;
 import com.kodizim.findaduck.domain.entry.AddEntryCommand;
+import com.kodizim.findaduck.domain.entry.Advertisement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -33,6 +36,11 @@ public class EntryController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void updateEntry(@PathVariable UUID entryId,@RequestBody AddEntryCommand command,Principal principal){
         entryService.updateEntry(entryId,command,principal.getName());
+    }
+
+    @GetMapping("/search")
+    Response<List<Advertisement>> entrySearch(@RequestBody EntrySearchCommand command, Principal principal){
+        return Response.of(entryService.search(command.getSearchString(),principal.getName()));
     }
 
 }

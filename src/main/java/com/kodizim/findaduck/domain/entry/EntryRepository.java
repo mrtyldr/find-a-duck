@@ -34,6 +34,10 @@ public interface EntryRepository extends JpaRepository<Entry, UUID>, EntryQuerie
     @Modifying
     @Query(value = "call refresh_active_entries()", nativeQuery = true)
     void refreshActiveEntries();
+    @Modifying
+    @Query(value = "call refresh_entry_search()", nativeQuery = true)
+    void refreshEntrySearch();
+
     @Query("select e.expectedProfessions from Entry e where e.id = :entryId")
     List<String> getProfessions(UUID entryId);
 
@@ -88,6 +92,48 @@ public interface EntryRepository extends JpaRepository<Entry, UUID>, EntryQuerie
             return toEntryDto(entityManager.createNativeQuery(sql,Tuple.class)
                     .setParameter("professions",professions));
 
+        }
+
+        @Override
+        public List<EntryDto> entrySearchEmployee(String searchString) {
+            return entrySearchResult(searchString,"employee");
+        }
+        private List<EntryDto> entrySearchResult(String searchString,String companyId) {
+            var entryDtosql =
+                    """
+                    select
+                    e.id,
+                    c.company_name,
+                    e.title,
+                    e.content,
+                    e.category,
+                    e.hourly_pay,
+                    e.created_on,
+                    e.job_start_date,
+                    e.valid_til,
+                    e.expected_professions
+                                
+                    from entry_search e
+                    inner join company c on e.company_id = c.company_id
+                    where e.document @@ to_tsquery(:searchString)
+                    """;
+            javax.persistence.Query query;
+            if(!companyId.equals("employee")) {
+                entryDtosql = entryDtosql + " and e.company_id = :companyId order by ts_rank(document,to_tsquery(:searchString)) desc";
+                 query = entityManager.createNativeQuery(entryDtosql, Tuple.class)
+                        .setParameter("searchString",searchString)
+                         .setParameter("companyId",companyId);
+            } else {
+                entryDtosql = entryDtosql +" order by ts_rank(document,to_tsquery(:searchString)) desc";
+                query = entityManager.createNativeQuery(entryDtosql, Tuple.class)
+                        .setParameter("searchString",searchString);
+            }
+            return toEntryDto(query);
+        }
+
+        @Override
+        public List<EntryDto> entrySearchCompany(String searchString, String userId) {
+            return entrySearchResult(searchString,userId);
         }
 
         private List<EntryDto> toEntryDto(javax.persistence.Query query) {
