@@ -45,5 +45,14 @@ public class UserController {
     Response<UserInfo> getUser(Principal principal){
         return Response.of(userService.getUserInfo(principal.getName()));
     }
+    @Value
+    public static class UpdatePasswordCommand {
+        String newPassword;
+    }
+    @PutMapping("/change-password")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void updatePassword(UpdatePasswordCommand command,Principal principal){
+        userService.updatePassword(command.getNewPassword(),principal.getName());
+    }
 
 }
