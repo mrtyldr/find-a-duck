@@ -5,6 +5,7 @@ import com.kodizim.findaduck.api.model.Response;
 import com.kodizim.findaduck.application.Entry.EntryService;
 import com.kodizim.findaduck.domain.entry.AddEntryCommand;
 import com.kodizim.findaduck.domain.entry.Advertisement;
+import com.kodizim.findaduck.domain.entry.EntrySearchCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +41,7 @@ public class EntryController {
 
     @GetMapping("/search")
     Response<List<Advertisement>> entrySearch(@RequestBody EntrySearchCommand command, Principal principal){
-        return Response.of(entryService.search(command.getSearchString(),principal.getName()));
+        return Response.of(entryService.search(command.searchString(),principal.getName()));
     }
 
 }

@@ -53,11 +53,11 @@ public class EntryService {
         );
         entryRepository.save(entry);
         entryRepository.refreshActiveEntries();
+        entryRepository.refreshEntrySearch();
     }
 
 
-
-    private List<UUID> getProfessionIds(List<String> professionNames){
+    private List<UUID> getProfessionIds(List<String> professionNames) {
         return professionRepository.findProfessionsByName(professionNames);
     }
 
@@ -70,24 +70,24 @@ public class EntryService {
     }
 
     @Transactional
-    public void apply(UUID entryId, String userId){
+    public void apply(UUID entryId, String userId) {
         var employee = employeeRepository.findByEmployeeId(userId)
                 .orElseThrow(() -> new NotFoundException("employee not found"));
-        if(applicationRepository.existsByEntryIdAndEmployeeId(entryId,userId))
+        if (applicationRepository.existsByEntryIdAndEmployeeId(entryId, userId))
             throw new AlreadyExistsException("You already Have Applied to this ad");
-        var application = new Application(entryId,employee.getEmployeeId(),OffsetDateTime.now(clock));
+        var application = new Application(entryId, employee.getEmployeeId(), OffsetDateTime.now(clock));
         applicationRepository.save(application);
     }
 
     public List<Advertisement> getAdvertisements(String employeeId) {
         String professions = employeeRepository.getProfessions(employeeId)
                 .toString();
-        var entryDtos = entryRepository.getEntryDto(employeeId,professions);
-        return entryDtos.stream().map(e -> toAdvertisement(e,employeeId))
+        var entryDtos = entryRepository.getEntryDto(employeeId, professions);
+        return entryDtos.stream().map(e -> toAdvertisement(e, employeeId))
                 .collect(Collectors.toList());
     }
 
-    private Advertisement toAdvertisement(EntryDto entryDto,String employeeId){
+    private Advertisement toAdvertisement(EntryDto entryDto, String employeeId) {
 
         return new Advertisement(
                 entryDto.getEntryId(),
@@ -99,61 +99,66 @@ public class EntryService {
                 entryDto.getJobStartDate(),
                 entryDto.getValidTil(),
                 entryDto.getCreatedOn(),
-                applicationRepository.existsByEntryIdAndEmployeeId(entryDto.getEntryId(),employeeId),
+                applicationRepository.existsByEntryIdAndEmployeeId(entryDto.getEntryId(), employeeId),
                 entryDto.getExpectedProfessions()
         );
     }
 
     public List<Advertisement> getAdvertisementsForCompany(String companyId) {
         var entryDtos = entryRepository.getEntryDtoForCompany(companyId);
-        return entryDtos.stream().map(e -> toAdvertisement(e,companyId))
+        return entryDtos.stream().map(e -> toAdvertisement(e, companyId))
                 .collect(Collectors.toList());
     }
+
     @Scheduled(cron = "0 0 0,6,12,18 ? * * *")
-    private void updateEntries(){
+    private void updateEntries() {
         var activeEntries = entryRepository.getActiveEntries();
         activeEntries.forEach(this::markClosedEntries);
         entryRepository.refreshActiveEntries();
     }
+
     @Transactional
-    public void markClosedEntries(Entry entry){
-        if(entry.getValidTil().isAfter(OffsetDateTime.now(clock)))
+    public void markClosedEntries(Entry entry) {
+        if (entry.getValidTil().isAfter(OffsetDateTime.now(clock)))
             entry.entryClosed();
         entryRepository.save(entry);
     }
+
     @Transactional
     public void deleteEntry(UUID entryId, String companyId) {
-        if(!entryRepository.existsByCompanyIdAndId(companyId,entryId))
+        if (!entryRepository.existsByCompanyIdAndId(companyId, entryId))
             throw new NotFoundException("Ad not found !");
-       var entry = entryRepository.findById(entryId)
-               .orElseThrow(()-> new NotFoundException("Entry Not Found!"));
-       entryRepository.delete(entry);
-       entryRepository.refreshActiveEntries();
+        var entry = entryRepository.findById(entryId)
+                .orElseThrow(() -> new NotFoundException("Entry Not Found!"));
+        entryRepository.delete(entry);
+        entryRepository.refreshActiveEntries();
+        entryRepository.refreshEntrySearch();
     }
+
     @Transactional
     public void updateEntry(UUID entryId, AddEntryCommand command, String companyId) {
         var entry = entryRepository.findById(entryId)
                 .orElseThrow(() -> new NotFoundException("Entry Not Found!"));
-        if(!entry.getCompanyId().equals(companyId))
+        if (!entry.getCompanyId().equals(companyId))
             throw new NotFoundException("Entry Not Found");
         entry.update(command);
 
         entryRepository.save(entry);
         entryRepository.refreshActiveEntries();
+        entryRepository.refreshEntrySearch();
     }
 
     public List<Advertisement> search(String searchString, String userId) {
-        if(companyRepository.existsByCompanyId(userId)){
-            var searchQuery = searchString.replace(" ","|");
-                return entryRepository.entrySearchCompany(searchQuery,userId)
-                        .stream().map(e -> toAdvertisement(e,userId))
-                        .collect(Collectors.toList());
+        if (companyRepository.existsByCompanyId(userId)) {
+            var searchQuery = searchString.replace(" ", "|");
+            return entryRepository.entrySearchCompany(searchQuery, userId)
+                    .stream().map(e -> toAdvertisement(e, userId))
+                    .collect(Collectors.toList());
         } else if (employeeRepository.existsByEmployeeId(userId)) {
-            var searchQuery = searchString.replace(" ","|");
+            var searchQuery = searchString.replace(" ", "|");
             return entryRepository.entrySearchEmployee(searchQuery)
                     .stream().map(e -> toAdvertisement(e, userId)).collect(Collectors.toList());
-        }
-        else {
+        } else {
             throw new NotFoundException("user not found");
         }
     }
