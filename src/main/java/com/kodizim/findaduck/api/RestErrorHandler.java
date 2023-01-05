@@ -5,6 +5,7 @@ import com.kodizim.findaduck.api.model.ErrorResponse;
 import com.kodizim.findaduck.error.AlreadyExistsException;
 import com.kodizim.findaduck.error.ApiException;
 import com.kodizim.findaduck.error.ErrorCode;
+import com.kodizim.findaduck.error.WrongUserNamePasswordException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -65,6 +66,11 @@ public class RestErrorHandler {
     @ResponseStatus(BAD_REQUEST)
     ErrorResponse handle(MaxUploadSizeExceededException e) {
         return ErrorResponse.of(ErrorCode.MAX_UPLOAD_SIZE_EXCEEDED.name(), e.getMostSpecificCause().getMessage());
+    }
+    @ExceptionHandler
+    @ResponseStatus(UNAUTHORIZED)
+    ErrorResponse handle(WrongUserNamePasswordException e){
+        return ErrorResponse.of(ErrorCode.WRONG_USERNAME_PASSWORD.name(), e.getMessage());
     }
 
     @ExceptionHandler
