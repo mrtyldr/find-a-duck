@@ -13,6 +13,7 @@ import com.kodizim.findaduck.domain.UserType;
 import com.kodizim.findaduck.domain.company.CompanyRepository;
 import com.kodizim.findaduck.domain.employee.EmployeeRepository;
 import com.kodizim.findaduck.error.NotFoundException;
+import com.kodizim.findaduck.error.WrongUserNamePasswordException;
 import com.kodizim.findaduck.infrastructure.auth0.Auth0Properties;
 import com.kodizim.findaduck.infrastructure.auth0.ManagementApiWrapper;
 import com.kodizim.findaduck.domain.AddUserCommand;
@@ -22,9 +23,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -147,8 +150,14 @@ public class UserService {
                 "profile email openid",
                 properties.getAudience()
         );
-        Auth0TokenEntity token = restTemplate.postForObject(uri,request,Auth0TokenEntity.class);
+        try {
+            Auth0TokenEntity token = restTemplate.postForObject(uri, request, Auth0TokenEntity.class);
+            return new UserController.UserToken(token.accessToken);
+        }catch(HttpClientErrorException e){
+            if(e.getStatusCode().equals(HttpStatus.FORBIDDEN))
+                throw new WrongUserNamePasswordException(e.getMessage());
+            throw new RuntimeException(e.getMessage());
+        }
 
-        return new UserController.UserToken(token.accessToken);
     }
 }
