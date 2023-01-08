@@ -1,8 +1,10 @@
 package com.kodizim.findaduck.domain.company;
 
+import javax.validation.constraints.NotNull;
+
 public record UpdateCompanyCommand(
-        String companyName,
-        String phoneNumber,
+        @NotNull String companyName,
+        @NotNull String phoneNumber,
         String about,
         String photoLocationKey
 ) {

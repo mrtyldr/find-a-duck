@@ -1,14 +1,16 @@
 package com.kodizim.findaduck.domain.employee;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 
 
-public record EmployeeInitialSetupCommand(String name,
-                                          String surname,
+public record EmployeeInitialSetupCommand(@NotNull @NotBlank String name,
+                                          @NotNull @NotBlank String surname,
                                           String phoneNumber,
                                           String photoLocationKey,
-                                          LocalDate birthDate,
+                                          @NotNull LocalDate birthDate,
                                           String about,
                                           List<String> professions) {
 }
