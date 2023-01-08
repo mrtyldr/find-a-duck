@@ -39,15 +39,11 @@ public class JobService {
 
 
     public List<JobDto> getEmployeeJobs(String employeeId) {
-        List<JobDto> jobDtoByEmployeeId = jobRepository.getJobDtoByEmployeeId(employeeId);
-        return jobDtoByEmployeeId;
+        return jobRepository.getJobDtoByEmployeeId(employeeId);
     }
 
     public List<JobDto> getCompanyJobs(String companyId) {
         return jobRepository.getJobDtosForCompany(companyId);
     }
 
-    public void rateEmployeeForTesting(String userId, int rate) {
-
-    }
 }

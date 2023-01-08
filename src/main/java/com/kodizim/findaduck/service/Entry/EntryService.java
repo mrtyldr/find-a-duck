@@ -57,9 +57,6 @@ public class EntryService {
     }
 
 
-    private List<UUID> getProfessionIds(List<String> professionNames) {
-        return professionRepository.findProfessionsByName(professionNames);
-    }
 
     private void addMissingProfessions(List<String> professions) {
         professions.stream()

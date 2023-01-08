@@ -82,8 +82,7 @@ public class UserService {
             else
                 companyService.addCompanyUser(createdUser.getId(),command.getEmail());
         } catch (Exception e) {
-            log.info("düştü buraya");
-            throw new RuntimeException("exception occured");
+            throw new RuntimeException(e.getMessage() + " cause: "  + e.getCause() );
         }
     }
 

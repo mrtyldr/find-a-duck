@@ -76,9 +76,6 @@ public class CompanyService {
         var company = companyRepository.findByCompanyId(companyId)
                 .orElseThrow(() -> new NotFoundException("company not found!"));
 
-        if(!company.getCompanyId().equals(companyId))
-            throw new NotFoundException("company not found!");
-
         company.update(command);
         companyRepository.save(company);
     }
