@@ -1,4 +1,4 @@
-package com.kodizim.findaduck.application.user;
+package com.kodizim.findaduck.service.user;
 
 import com.kodizim.findaduck.domain.employee.*;
 import com.kodizim.findaduck.domain.job.ApplicationDto;
@@ -44,7 +44,6 @@ public class EmployeeService {
     }
 
     public EmployeeDto getEmployeeDto(String userId) {
-
         return employeeRepository.getEmployeeDto(userId)
                 .orElseThrow(() -> new NotFoundException("user not found!"));
     }
@@ -61,8 +60,6 @@ public class EmployeeService {
     public void update(UpdateEmployeeCommand command, String employeeId) {
         var employee = employeeRepository.findByEmployeeId(employeeId)
                 .orElseThrow(() -> new NotFoundException("Employee not found!"));
-        if(!employee.getEmployeeId().equals(employeeId))
-            throw new NotFoundException("Employee not found!");
         employee.update(command);
         employeeRepository.save(employee);
 

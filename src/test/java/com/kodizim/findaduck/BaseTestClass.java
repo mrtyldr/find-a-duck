@@ -1,8 +1,8 @@
 package com.kodizim.findaduck;
 
-import com.kodizim.findaduck.application.TestDataService;
-import com.kodizim.findaduck.application.user.CompanyService;
-import com.kodizim.findaduck.application.user.EmployeeService;
+import com.kodizim.findaduck.service.TestDataService;
+import com.kodizim.findaduck.service.user.CompanyService;
+import com.kodizim.findaduck.service.user.EmployeeService;
 import com.kodizim.findaduck.domain.company.Company;
 import com.kodizim.findaduck.domain.employee.Employee;
 import com.kodizim.findaduck.domain.entry.Entry;
@@ -21,9 +21,7 @@ import org.springframework.test.jdbc.JdbcTestUtils;
 
 import java.time.Clock;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.Set;
 import java.util.List;
 
 

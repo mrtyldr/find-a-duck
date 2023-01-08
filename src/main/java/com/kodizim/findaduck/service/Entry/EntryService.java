@@ -1,4 +1,4 @@
-package com.kodizim.findaduck.application.Entry;
+package com.kodizim.findaduck.service.Entry;
 
 import com.kodizim.findaduck.domain.company.CompanyRepository;
 import com.kodizim.findaduck.domain.employee.EmployeeRepository;
@@ -57,9 +57,6 @@ public class EntryService {
     }
 
 
-    private List<UUID> getProfessionIds(List<String> professionNames) {
-        return professionRepository.findProfessionsByName(professionNames);
-    }
 
     private void addMissingProfessions(List<String> professions) {
         professions.stream()

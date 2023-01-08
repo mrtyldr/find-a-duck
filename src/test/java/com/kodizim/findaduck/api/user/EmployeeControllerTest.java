@@ -1,8 +1,8 @@
 package com.kodizim.findaduck.api.user;
 
 import com.kodizim.findaduck.BaseTestClass;
-import com.kodizim.findaduck.application.TestDataService;
-import com.kodizim.findaduck.application.user.CompanyService;
+import com.kodizim.findaduck.service.TestDataService;
+import com.kodizim.findaduck.service.user.CompanyService;
 import com.kodizim.findaduck.domain.employee.EmployeeRepository;
 import com.kodizim.findaduck.domain.employee.ProfessionRepository;
 import com.kodizim.findaduck.domain.job.JobRepository;

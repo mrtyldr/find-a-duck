@@ -2,7 +2,7 @@ package com.kodizim.findaduck.api.entry;
 
 
 import com.kodizim.findaduck.api.model.Response;
-import com.kodizim.findaduck.application.Entry.EntryService;
+import com.kodizim.findaduck.service.Entry.EntryService;
 import com.kodizim.findaduck.domain.entry.AddEntryCommand;
 import com.kodizim.findaduck.domain.entry.Advertisement;
 import lombok.RequiredArgsConstructor;

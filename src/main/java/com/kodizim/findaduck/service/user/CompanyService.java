@@ -1,6 +1,6 @@
-package com.kodizim.findaduck.application.user;
+package com.kodizim.findaduck.service.user;
 
-import com.kodizim.findaduck.application.Entry.EntryService;
+import com.kodizim.findaduck.service.Entry.EntryService;
 import com.kodizim.findaduck.domain.company.*;
 import com.kodizim.findaduck.domain.entry.EntryRepository;
 import com.kodizim.findaduck.domain.job.ApplicationRepository;
@@ -75,9 +75,6 @@ public class CompanyService {
     public void update(UpdateCompanyCommand command, String companyId) {
         var company = companyRepository.findByCompanyId(companyId)
                 .orElseThrow(() -> new NotFoundException("company not found!"));
-
-        if(!company.getCompanyId().equals(companyId))
-            throw new NotFoundException("company not found!");
 
         company.update(command);
         companyRepository.save(company);

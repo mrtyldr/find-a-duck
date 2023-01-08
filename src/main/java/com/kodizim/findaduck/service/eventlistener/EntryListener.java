@@ -1,4 +1,4 @@
-package com.kodizim.findaduck.application.eventlistener;
+package com.kodizim.findaduck.service.eventlistener;
 
 import com.kodizim.findaduck.domain.entry.EntryRepository;
 import com.kodizim.findaduck.domain.job.ApplicationAccepted;

@@ -2,9 +2,9 @@ package com.kodizim.findaduck.api.user;
 
 
 import com.kodizim.findaduck.api.model.Response;
-import com.kodizim.findaduck.application.Entry.EntryService;
-import com.kodizim.findaduck.application.Entry.JobService;
-import com.kodizim.findaduck.application.user.CompanyService;
+import com.kodizim.findaduck.service.Entry.EntryService;
+import com.kodizim.findaduck.service.Entry.JobService;
+import com.kodizim.findaduck.service.user.CompanyService;
 import com.kodizim.findaduck.domain.company.CompanyDto;
 import com.kodizim.findaduck.domain.company.CompanyInitialSetupCommand;
 import com.kodizim.findaduck.domain.company.CompanyRepository;

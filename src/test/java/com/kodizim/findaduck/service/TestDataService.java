@@ -1,8 +1,8 @@
-package com.kodizim.findaduck.application;
+package com.kodizim.findaduck.service;
 
-import com.kodizim.findaduck.application.Entry.EntryService;
-import com.kodizim.findaduck.application.user.CompanyService;
-import com.kodizim.findaduck.application.user.EmployeeService;
+import com.kodizim.findaduck.service.Entry.EntryService;
+import com.kodizim.findaduck.service.user.CompanyService;
+import com.kodizim.findaduck.service.user.EmployeeService;
 import com.kodizim.findaduck.domain.company.Company;
 import com.kodizim.findaduck.domain.company.CompanyInitialSetupCommand;
 import com.kodizim.findaduck.domain.company.CompanyRepository;
