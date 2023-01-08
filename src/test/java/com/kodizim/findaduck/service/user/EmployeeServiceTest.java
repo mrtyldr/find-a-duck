@@ -1,19 +1,9 @@
-package com.kodizim.findaduck.application.user;
+package com.kodizim.findaduck.service.user;
 
 import com.kodizim.findaduck.BaseTestClass;
-import com.kodizim.findaduck.application.Entry.JobService;
-import com.kodizim.findaduck.application.TestDataService;
-import com.kodizim.findaduck.domain.employee.EmployeeInitialSetupCommand;
 import com.kodizim.findaduck.domain.employee.EmployeeRepository;
-import com.kodizim.findaduck.domain.job.Job;
 import com.kodizim.findaduck.domain.job.JobRepository;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.time.LocalDate;
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

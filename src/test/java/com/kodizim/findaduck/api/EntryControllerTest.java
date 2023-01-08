@@ -1,7 +1,7 @@
 package com.kodizim.findaduck.api;
 
 import com.kodizim.findaduck.BaseTestClass;
-import com.kodizim.findaduck.application.TestDataService;
+import com.kodizim.findaduck.service.TestDataService;
 import com.kodizim.findaduck.domain.company.CompanyRepository;
 import com.kodizim.findaduck.domain.entry.EntryRepository;
 import org.junit.jupiter.api.Test;

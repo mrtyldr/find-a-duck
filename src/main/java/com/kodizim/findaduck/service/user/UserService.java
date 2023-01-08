@@ -1,4 +1,4 @@
-package com.kodizim.findaduck.application.user;
+package com.kodizim.findaduck.service.user;
 
 
 import com.auth0.client.auth.AuthAPI;

@@ -1,4 +1,4 @@
-package com.kodizim.findaduck.application.Entry;
+package com.kodizim.findaduck.service.Entry;
 
 import com.kodizim.findaduck.domain.company.CompanyRepository;
 import com.kodizim.findaduck.domain.employee.EmployeeRepository;
