@@ -82,7 +82,7 @@ public class EntryService {
 
         var entryDtos = entryRepository.getEntryDto(employeeId, professions);
         return entryDtos.stream().map(e -> toAdvertisement(e, employeeId))
-                .collect(Collectors.toList());
+                .toList();
     }
 
 
