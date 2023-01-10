@@ -32,9 +32,6 @@ public interface EntryRepository extends JpaRepository<Entry, UUID>, EntryQuerie
     List<Entry> getActiveEntries();
 
     @Modifying
-    @Query(value = "call refresh_active_entries()", nativeQuery = true)
-    void refreshActiveEntries();
-    @Modifying
     @Query(value = "call refresh_entry_search()", nativeQuery = true)
     void refreshEntrySearch();
 
@@ -60,7 +57,7 @@ public interface EntryRepository extends JpaRepository<Entry, UUID>, EntryQuerie
                     e.valid_til,
                     e.expected_professions
                                 
-                    from active_entries e
+                    from entry_search e
                     inner join company c on e.company_id = c.company_id
                     where e.company_id = :companyId
                     order by e.created_on desc
@@ -84,9 +81,9 @@ public interface EntryRepository extends JpaRepository<Entry, UUID>, EntryQuerie
                     e.valid_til,
                     e.expected_professions
                                 
-                    from active_entries e
+                    from entry_search e
                     inner join company c on e.company_id = c.company_id           
-                    order by ts_rank(to_tsvector(array_to_string(expected_professions,' ')), to_tsquery(:professions)) desc
+                    order by ts_rank(document, to_tsquery(:professions)) desc
                     """;
             return toEntryDto(entityManager.createNativeQuery(sql,Tuple.class)
                     .setParameter("professions",professions));
@@ -95,7 +92,7 @@ public interface EntryRepository extends JpaRepository<Entry, UUID>, EntryQuerie
 
         @Override
         public List<EntryDto> entrySearchEmployee(String searchString) {
-            return entrySearchResult(searchString,"employee");
+            return entrySearchResult(searchString,null);
         }
         private List<EntryDto> entrySearchResult(String searchString,String companyId) {
             var entryDtosql =
@@ -117,7 +114,7 @@ public interface EntryRepository extends JpaRepository<Entry, UUID>, EntryQuerie
                     where e.document @@ to_tsquery(:searchString)
                     """;
             javax.persistence.Query query;
-            if(!companyId.equals("employee")) {
+            if(companyId != null) {
                 entryDtosql = entryDtosql + " and e.company_id = :companyId order by ts_rank(document,to_tsquery(:searchString)) desc";
                  query = entityManager.createNativeQuery(entryDtosql, Tuple.class)
                         .setParameter("searchString",searchString)

@@ -47,7 +47,7 @@ public class EmployeeService {
         return employeeRepository.getEmployeeDto(userId)
                 .orElseThrow(() -> new NotFoundException("user not found!"));
     }
-
+    @Transactional
     public void addEmployeeUser(String userId, String email) {
         var employee = new Employee(userId, email);
         employeeRepository.save(employee);
@@ -56,7 +56,7 @@ public class EmployeeService {
     public List<ApplicationDto> getApplications(String userId) {
         return applicationRepository.getApplicationDto(userId);
     }
-
+    @Transactional
     public void update(UpdateEmployeeCommand command, String employeeId) {
         var employee = employeeRepository.findByEmployeeId(employeeId)
                 .orElseThrow(() -> new NotFoundException("Employee not found!"));

@@ -21,7 +21,8 @@ select    e.id,
 from entry e
          inner join company c on e.company_id = c.company_id
 where e.status = 'ACTIVE';
-create unique index on entry_search (document);
+create unique index on entry_search (id);
+create index on entry_search using gin(document);
 create or replace procedure refresh_entry_search()
     language plpgsql
 as

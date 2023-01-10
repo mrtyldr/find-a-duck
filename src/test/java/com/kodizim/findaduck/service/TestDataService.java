@@ -84,7 +84,6 @@ public class TestDataService {
                 List.of("IT", "COMPUTER", "JAVA")
         );
         entryRepository.save(entry);
-        entryRepository.refreshActiveEntries();
         entryRepository.refreshEntrySearch();
         return entry;
     }
@@ -107,7 +106,6 @@ public class TestDataService {
                 List.of("IT", "COMPUTER", "C#")
         );
         entryRepository.save(entry);
-        entryRepository.refreshActiveEntries();
         entryRepository.refreshEntrySearch();
         return entry;
     }
@@ -130,7 +128,6 @@ public class TestDataService {
                 List.of("COFFEE", "TEA", "BARISTA")
         );
         entryRepository.save(entry);
-        entryRepository.refreshActiveEntries();
         entryRepository.refreshEntrySearch();
         return entry;
     }
@@ -153,7 +150,6 @@ public class TestDataService {
                 List.of("COFFEE", "TEA", "BARISTA")
         );
         entryRepository.save(entry);
-        entryRepository.refreshActiveEntries();
         entryRepository.refreshEntrySearch();
         return entry;
     }

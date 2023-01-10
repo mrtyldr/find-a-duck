@@ -47,22 +47,30 @@ public class UserService {
 
     private final RestTemplate restTemplate;
 
-    public UserService(AuthAPI api, Auth0Properties properties, EmployeeService employeeService, CompanyService companyService, RestTemplateBuilder restTemplateBuilder,
+    public UserService(AuthAPI api, Auth0Properties properties,
+                       EmployeeService employeeService,
+                       CompanyService companyService,
+                       RestTemplateBuilder restTemplateBuilder,
                        EmployeeRepository employeeRepository,
                        CompanyRepository companyRepository) {
         this.properties = properties;
+
         var objectMapper = new ObjectMapper()
                 .registerModule(new JavaTimeModule())
                 .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
         this.employeeService = employeeService;
         this.companyService = companyService;
+
         this.restTemplate = restTemplateBuilder
                 .messageConverters(new MappingJackson2HttpMessageConverter(objectMapper))
                 .build();
+
         this.apiWrapper = new ManagementApiWrapper(api
                 , properties.getManagementAudience()
                 , properties.getDomain());
+
         this.employeeRepository = employeeRepository;
         this.companyRepository = companyRepository;
     }
@@ -77,18 +85,18 @@ public class UserService {
             user.setEmail(command.getEmail());
             user.setPassword(command.getPassword().toCharArray());
             var createdUser = apiWrapper.call(api -> api.users().create(user).execute());
-            if(command.getUserType().equals(UserType.EMPLOYEE))
-                employeeService.addEmployeeUser(createdUser.getId(),command.getEmail());
+            if (command.getUserType().equals(UserType.EMPLOYEE))
+                employeeService.addEmployeeUser(createdUser.getId(), command.getEmail());
             else
-                companyService.addCompanyUser(createdUser.getId(),command.getEmail());
+                companyService.addCompanyUser(createdUser.getId(), command.getEmail());
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage() + " cause: "  + e.getCause() );
+            throw new RuntimeException(e.getMessage() + " cause: " + e.getCause());
         }
     }
 
     public UserInfo getUserInfo(String id) {
-        if(employeeRepository.existsByEmployeeId(id)){
-            var employee =  employeeRepository.isOnboardingDone(id)
+        if (employeeRepository.existsByEmployeeId(id)) {
+            var employee = employeeRepository.isOnboardingDone(id)
                     .get();
             employee.setUserType(UserType.EMPLOYEE);
             return employee;
@@ -97,18 +105,18 @@ public class UserService {
                     .get();
             company.setUserType(UserType.COMPANY);
             return company;
-        }else
+        } else
             throw new NotFoundException("user not found");
 
 
     }
 
-    public void updatePassword(String newPassword,String userId) {
+    public void updatePassword(String newPassword, String userId) {
         try {
-            var user = apiWrapper.call(a -> a.users().get(userId,null).execute());
+            var user = apiWrapper.call(a -> a.users().get(userId, null).execute());
             user.setPassword(newPassword.toCharArray());
-            apiWrapper.call(a -> a.users().update(userId,user));
-        }catch (Exception e) {
+            apiWrapper.call(a -> a.users().update(userId, user));
+        } catch (Exception e) {
             log.error(e.getMessage());
         }
     }
@@ -116,17 +124,18 @@ public class UserService {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Auth0TokenEntity{
+    public static class Auth0TokenEntity {
         String accessToken;
         String idToken;
         String Scope;
         Integer expiresIn;
         String tokenType;
     }
+
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public class Auth0TokenRequest{
+    public class Auth0TokenRequest {
         String grantType;
         String realm;
         String clientId;
@@ -136,6 +145,7 @@ public class UserService {
         String scope;
         String audience;
     }
+
     public UserController.UserToken login(String email, String password) {
         var uri = UriComponentsBuilder.fromUriString("https://kodforum.us.auth0.com/oauth/token")
                 .build().toUri();
@@ -152,8 +162,8 @@ public class UserService {
         try {
             Auth0TokenEntity token = restTemplate.postForObject(uri, request, Auth0TokenEntity.class);
             return new UserController.UserToken(token.accessToken);
-        }catch(HttpClientErrorException e){
-            if(e.getStatusCode().equals(HttpStatus.FORBIDDEN))
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode().equals(HttpStatus.FORBIDDEN))
                 throw new WrongUserNamePasswordException(e.getMessage());
             throw new RuntimeException(e.getMessage());
         }

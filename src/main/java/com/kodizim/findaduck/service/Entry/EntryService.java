@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -53,10 +52,8 @@ public class EntryService {
                 command.expectedProfessions()
         );
         entryRepository.save(entry);
-        entryRepository.refreshActiveEntries();
         entryRepository.refreshEntrySearch();
     }
-
 
 
     private void addMissingProfessions(List<String> professions) {
@@ -79,18 +76,14 @@ public class EntryService {
 
     public List<Advertisement> getAdvertisements(String employeeId) {
         var professions = employeeRepository.getProfessions(employeeId)
-                .toString().replaceAll("[^\\w\\s]", " ")
+                .toString().replaceAll("[^\\w\\s]", "")
                 .trim()
                 .replaceAll(" ", " | ");
 
         var entryDtos = entryRepository.getEntryDto(employeeId, professions);
-        List<Advertisement> returnList = new ArrayList<>();
-        for(var dto : entryDtos){
-            var a = toAdvertisement(dto,employeeId);
-            returnList.add(a);
-        }
 
-        return returnList;
+        return entryDtos.stream().map(e -> toAdvertisement(e, employeeId))
+                .toList();
     }
 
 
@@ -113,7 +106,8 @@ public class EntryService {
 
     public List<Advertisement> getAdvertisementsForCompany(String companyId) {
         var entryDtos = entryRepository.getEntryDtoForCompany(companyId);
-        return entryDtos.stream().map(e -> toAdvertisement(e, companyId))
+        return entryDtos.stream()
+                .map(e -> toAdvertisement(e, companyId))
                 .collect(Collectors.toList());
     }
 
@@ -121,7 +115,7 @@ public class EntryService {
     private void updateEntries() {
         var activeEntries = entryRepository.getActiveEntries();
         activeEntries.forEach(this::markClosedEntries);
-        entryRepository.refreshActiveEntries();
+        entryRepository.refreshEntrySearch();
     }
 
     @Transactional
@@ -138,7 +132,6 @@ public class EntryService {
         var entry = entryRepository.findById(entryId)
                 .orElseThrow(() -> new NotFoundException("Entry Not Found!"));
         entryRepository.delete(entry);
-        entryRepository.refreshActiveEntries();
         entryRepository.refreshEntrySearch();
     }
 
@@ -151,7 +144,6 @@ public class EntryService {
         entry.update(command);
 
         entryRepository.save(entry);
-        entryRepository.refreshActiveEntries();
         entryRepository.refreshEntrySearch();
     }
 
@@ -159,12 +151,14 @@ public class EntryService {
         if (companyRepository.existsByCompanyId(userId)) {
             var searchQuery = searchString
                     .trim()
-                    .replace(" ", "|");
+                    .replace(" ", " | ");
             return entryRepository.entrySearchCompany(searchQuery, userId)
                     .stream().map(e -> toAdvertisement(e, userId))
                     .collect(Collectors.toList());
         } else if (employeeRepository.existsByEmployeeId(userId)) {
-            var searchQuery = searchString.replace(" ", "|");
+            var searchQuery = searchString
+                    .trim()
+                    .replace(" ", " | ");
             return entryRepository.entrySearchEmployee(searchQuery)
                     .stream().map(e -> toAdvertisement(e, userId)).collect(Collectors.toList());
         } else {

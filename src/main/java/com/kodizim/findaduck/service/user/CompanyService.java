@@ -71,7 +71,7 @@ public class CompanyService {
         return companyRepository.getCompanyDto(companyId)
                 .orElseThrow(() -> new NotFoundException("company not Found"));
     }
-
+    @Transactional
     public void update(UpdateCompanyCommand command, String companyId) {
         var company = companyRepository.findByCompanyId(companyId)
                 .orElseThrow(() -> new NotFoundException("company not found!"));
