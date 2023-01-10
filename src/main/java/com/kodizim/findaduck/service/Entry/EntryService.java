@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -81,8 +82,13 @@ public class EntryService {
                 .toString().replace(","," | ");
 
         var entryDtos = entryRepository.getEntryDto(employeeId, professions);
-        return entryDtos.stream().map(e -> toAdvertisement(e, employeeId))
-                .toList();
+        List<Advertisement> returnList = new ArrayList<>();
+        for(var dto : entryDtos){
+            var a = toAdvertisement(dto,employeeId);
+            returnList.add(a);
+        }
+
+        return returnList;
     }
 
 
