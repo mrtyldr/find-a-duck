@@ -157,7 +157,9 @@ public class EntryService {
 
     public List<Advertisement> search(String searchString, String userId) {
         if (companyRepository.existsByCompanyId(userId)) {
-            var searchQuery = searchString.replace(" ", "|");
+            var searchQuery = searchString
+                    .trim()
+                    .replace(" ", "|");
             return entryRepository.entrySearchCompany(searchQuery, userId)
                     .stream().map(e -> toAdvertisement(e, userId))
                     .collect(Collectors.toList());
