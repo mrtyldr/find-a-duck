@@ -133,7 +133,7 @@ public interface EntryRepository extends JpaRepository<Entry, UUID>, EntryQuerie
         }
 
         private List<EntryDto> toEntryDto(javax.persistence.Query query) {
-            var tuple = (List<Tuple>) query.unwrap(NativeQuery.class)
+            var tuple1 = query.unwrap(NativeQuery.class)
                     .addScalar("id", UUIDCharType.INSTANCE)
                     .addScalar("company_name")
                     .addScalar("title")
@@ -143,8 +143,9 @@ public interface EntryRepository extends JpaRepository<Entry, UUID>, EntryQuerie
                     .addScalar("created_on", OffsetDateTimeType.INSTANCE)
                     .addScalar("job_start_date", OffsetDateTimeType.INSTANCE)
                     .addScalar("valid_til", OffsetDateTimeType.INSTANCE)
-                    .addScalar("expected_professions", StringArrayType.INSTANCE)
-                    .getResultList();
+                    .addScalar("expected_professions", StringArrayType.INSTANCE);
+
+                 var tuple =  (List<Tuple>)tuple1.getResultList();
 
             return tuple.stream().map(t -> {
                 var category = Category.valueOf(t.get("category",String.class));
