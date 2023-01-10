@@ -79,7 +79,9 @@ public class EntryService {
 
     public List<Advertisement> getAdvertisements(String employeeId) {
         var professions = employeeRepository.getProfessions(employeeId)
-                .toString();
+                .toString().replaceAll("[^\\w\\s]", " ")
+                .trim()
+                .replaceAll(" ", " | ");
 
         var entryDtos = entryRepository.getEntryDto(employeeId, professions);
         List<Advertisement> returnList = new ArrayList<>();
