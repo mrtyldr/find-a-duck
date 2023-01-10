@@ -79,7 +79,7 @@ public class EntryService {
 
     public List<Advertisement> getAdvertisements(String employeeId) {
         var professions = employeeRepository.getProfessions(employeeId)
-                .toString().replace(","," | ");
+                .toString();
 
         var entryDtos = entryRepository.getEntryDto(employeeId, professions);
         List<Advertisement> returnList = new ArrayList<>();
