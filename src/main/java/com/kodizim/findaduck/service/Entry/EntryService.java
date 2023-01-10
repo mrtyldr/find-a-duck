@@ -77,12 +77,14 @@ public class EntryService {
     }
 
     public List<Advertisement> getAdvertisements(String employeeId) {
-        String professions = employeeRepository.getProfessions(employeeId)
-                .toString();
+        var professions = employeeRepository.getProfessions(employeeId)
+                .toString().replace(","," | ");
+
         var entryDtos = entryRepository.getEntryDto(employeeId, professions);
         return entryDtos.stream().map(e -> toAdvertisement(e, employeeId))
                 .collect(Collectors.toList());
     }
+
 
     private Advertisement toAdvertisement(EntryDto entryDto, String employeeId) {
 

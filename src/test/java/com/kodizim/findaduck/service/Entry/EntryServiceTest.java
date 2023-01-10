@@ -64,7 +64,7 @@ class EntryServiceTest{
                 OffsetDateTime.now(),
                 List.of()
         );
-        Mockito.doReturn(List.of(entryDto)).when(entryRepository).getEntryDto("employee", "[java, Spring Boot, PostgreSQL]");
+        Mockito.doReturn(List.of(entryDto)).when(entryRepository).getEntryDto("employee", "[java |  Spring Boot |  PostgreSQL]");
         Mockito.doReturn(List.of("java","Spring Boot","PostgreSQL")).when(employeeRepository).getProfessions("employee");
         var advertisement = entryService.getAdvertisements("employee").stream().findFirst()
                 .orElseThrow();

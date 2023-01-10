@@ -86,7 +86,7 @@ public interface EntryRepository extends JpaRepository<Entry, UUID>, EntryQuerie
                                 
                     from active_entries e
                     inner join company c on e.company_id = c.company_id           
-                    order by ts_rank(to_tsvector(array_to_string(expected_professions,' ')), plainto_tsquery(:professions)) desc
+                    order by ts_rank(to_tsvector(array_to_string(expected_professions,' ')), to_tsquery(:professions)) desc
                     """;
             return toEntryDto(entityManager.createNativeQuery(sql,Tuple.class)
                     .setParameter("professions",professions));
